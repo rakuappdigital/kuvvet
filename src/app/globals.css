@@ -1,0 +1,48 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --bg: 240 10% 6%;
+    --surface: 240 8% 10%;
+    --surface2: 240 6% 14%;
+    --border: 240 6% 18%;
+    --accent: 258 80% 65%;
+    --accent-fg: 0 0% 100%;
+    --text: 240 10% 95%;
+    --text-muted: 240 6% 55%;
+  }
+
+  * {
+    border-color: hsl(var(--border));
+  }
+
+  body {
+    background: hsl(var(--bg));
+    color: hsl(var(--text));
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  input, textarea {
+    outline: none;
+  }
+}
+
+@layer components {
+  .accent {
+    background: hsl(var(--accent));
+    color: hsl(var(--accent-fg));
+  }
+}
+
+@layer utilities {
+  .bg-surface { background: hsl(var(--surface)); }
+  .bg-surface2 { background: hsl(var(--surface2)); }
+  .text-muted { color: hsl(var(--text-muted)); }
+  .border-base { border-color: hsl(var(--border)); }
+  .text-accent { color: hsl(var(--accent)); }
+  .divide-base > * + * { border-color: hsl(var(--border)); }
+  .ring-accent { --tw-ring-color: hsl(var(--accent)); }
+}
