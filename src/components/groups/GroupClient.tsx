@@ -22,12 +22,12 @@ interface Member {
 interface Props {
   group: Group
   currentProfile: Profile
-  myRole: string
+  myRole: string // reserved for future admin controls
   initialMembers: Member[]
   initialPolls: (Poll & { poll_options: PollOption[] })[]
 }
 
-export default function GroupClient({ group, currentProfile, myRole, initialMembers, initialPolls }: Props) {
+export default function GroupClient({ group, currentProfile, myRole: _myRole, initialMembers, initialPolls }: Props) {
   const [tab, setTab] = useState<Tab>('wall')
   const [polls, setPolls] = useState(initialPolls)
   const [showInvite, setShowInvite] = useState(false)
