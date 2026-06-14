@@ -14,6 +14,7 @@ interface Props {
 
 export default function CreateActivityModal({ groupId, userId, onCreated, onClose }: Props) {
   const [title, setTitle] = useState('')
+  const [eventAt, setEventAt] = useState('')
   const [loading, setLoading] = useState(false)
   const supabase = createClient()
 
@@ -26,6 +27,7 @@ export default function CreateActivityModal({ groupId, userId, onCreated, onClos
       group_id: groupId,
       created_by: userId,
       title: title.trim(),
+      event_at: eventAt ? new Date(eventAt).toISOString() : null,
     })
 
     onCreated()
@@ -58,6 +60,19 @@ export default function CreateActivityModal({ groupId, userId, onCreated, onClos
               className="w-full bg-surface2 border border-base rounded-xl px-4 py-3 text-sm focus:ring-1 ring-accent transition resize-none"
             />
             <p className="text-xs text-muted text-right">{title.length}/300</p>
+          </div>
+
+          <div className="space-y-1.5">
+            <label className="block text-xs font-medium text-muted uppercase tracking-widest">
+              Tarih & saat <span className="normal-case opacity-60">(isteğe bağlı)</span>
+            </label>
+            <input
+              type="datetime-local"
+              value={eventAt}
+              onChange={e => setEventAt(e.target.value)}
+              className="w-full bg-surface2 border border-base rounded-xl px-4 py-3 text-sm focus:ring-1 ring-accent transition"
+            />
+            <p className="text-xs text-muted">Tarih geçince aktivite arşive taşınır.</p>
           </div>
 
           <div className="flex gap-2">

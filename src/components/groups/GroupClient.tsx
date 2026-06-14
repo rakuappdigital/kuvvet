@@ -12,6 +12,7 @@ import InviteModal from '@/components/groups/InviteModal'
 import GroupSettingsModal from '@/components/groups/GroupSettingsModal'
 import ActivityCard from '@/components/activity/ActivityCard'
 import CreateActivityModal from '@/components/activity/CreateActivityModal'
+import ArchiveWidget from '@/components/groups/ArchiveWidget'
 import Avatar from '@/components/ui/Avatar'
 import Button from '@/components/ui/Button'
 import { createClient } from '@/lib/supabase/client'
@@ -42,6 +43,12 @@ export default function GroupClient({ group, currentProfile, myRole: _myRole, in
   const [tab, setTab] = useState<Tab>('wall')
   const [polls, setPolls] = useState(initialPolls)
   const [activities, setActivities] = useState(initialActivities)
+
+  const now = new Date().toISOString()
+  const activePolls = polls.filter(p => !p.ends_at || p.ends_at > now)
+  const expiredPolls = polls.filter(p => p.ends_at && p.ends_at <= now)
+  const activeActivities = activities.filter(a => !a.event_at || a.event_at > now)
+  const pastActivities = activities.filter(a => a.event_at && a.event_at <= now)
   const [showInvite, setShowInvite] = useState(false)
   const [showCreatePoll, setShowCreatePoll] = useState(false)
   const [showCreateActivity, setShowCreateActivity] = useState(false)
@@ -158,16 +165,17 @@ export default function GroupClient({ group, currentProfile, myRole: _myRole, in
               <Plus className="w-3.5 h-3.5" />Anket ekle
             </Button>
           </div>
-          {polls.length === 0 ? (
+          {activePolls.length === 0 ? (
             <div className="bg-surface border border-base rounded-2xl p-10 text-center space-y-3">
               <div className="w-10 h-10 bg-surface2 border border-base rounded-xl flex items-center justify-center mx-auto">
                 <BarChart2 className="w-4 h-4 text-muted" />
               </div>
-              <p className="text-muted text-sm">Henüz anket yok.</p>
+              <p className="text-muted text-sm">Henüz aktif anket yok.</p>
+              {expiredPolls.length > 0 && <p className="text-xs text-muted">{expiredPolls.length} anket sona erdi — sağ alttaki kutucuğa bak.</p>}
             </div>
           ) : (
             <div className="space-y-3">
-              {polls.map(poll => <PollCard key={poll.id} poll={poll} currentProfile={currentProfile} />)}
+              {activePolls.map(poll => <PollCard key={poll.id} poll={poll} currentProfile={currentProfile} />)}
             </div>
           )}
         </div>
@@ -181,17 +189,20 @@ export default function GroupClient({ group, currentProfile, myRole: _myRole, in
               <Plus className="w-3.5 h-3.5" />Aktivite ekle
             </Button>
           </div>
-          {activities.length === 0 ? (
+          {activeActivities.length === 0 ? (
             <div className="bg-surface border border-base rounded-2xl p-10 text-center space-y-3">
               <div className="w-10 h-10 bg-surface2 border border-base rounded-xl flex items-center justify-center mx-auto">
                 <CalendarCheck className="w-4 h-4 text-muted" />
               </div>
-              <p className="text-muted text-sm">Henüz aktivite yok.</p>
-              <p className="text-xs text-muted">Bir buluşma veya etkinlik oluştur, üyeler katılıp katılmayacaklarını belirtsin.</p>
+              <p className="text-muted text-sm">Henüz aktif aktivite yok.</p>
+              {pastActivities.length > 0
+                ? <p className="text-xs text-muted">{pastActivities.length} aktivite geçti — sağ alttaki kutucuğa bak.</p>
+                : <p className="text-xs text-muted">Bir buluşma veya etkinlik oluştur, üyeler katılıp katılmayacaklarını belirtsin.</p>
+              }
             </div>
           ) : (
             <div className="space-y-3">
-              {activities.map(a => (
+              {activeActivities.map(a => (
                 <ActivityCard
                   key={a.id}
                   activity={a}
@@ -225,6 +236,12 @@ export default function GroupClient({ group, currentProfile, myRole: _myRole, in
           ))}
         </div>
       )}
+
+      <ArchiveWidget
+        expiredPolls={expiredPolls}
+        pastActivities={pastActivities as any}
+        currentProfile={currentProfile}
+      />
 
       {showInvite && <InviteModal group={groupData} onClose={() => setShowInvite(false)} />}
       {showSettings && (

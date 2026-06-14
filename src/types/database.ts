@@ -55,6 +55,7 @@ export interface Activity {
   group_id: string
   created_by: string
   title: string
+  event_at: string | null
   created_at: string
 }
 
