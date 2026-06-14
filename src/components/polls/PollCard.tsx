@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Clock, Users2, ToggleLeft } from 'lucide-react'
+import { Clock, Users2, ToggleLeft, Trash2, AlertTriangle, Loader2 } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { formatRelativeTime } from '@/lib/utils'
 import type { Poll, PollOption, PollVote, Profile } from '@/types/database'
@@ -15,11 +15,15 @@ const PRIORITY = {
 interface Props {
   poll: Poll & { poll_options: PollOption[] }
   currentProfile: Profile
+  canDelete?: boolean
+  onDeleted?: (id: string) => void
 }
 
-export default function PollCard({ poll, currentProfile }: Props) {
+export default function PollCard({ poll, currentProfile, canDelete, onDeleted }: Props) {
   const [votes, setVotes] = useState<PollVote[]>([])
   const [voting, setVoting] = useState(false)
+  const [deleteConfirm, setDeleteConfirm] = useState(false)
+  const [deleting, setDeleting] = useState(false)
   const supabase = createClient()
 
   const isExpired = poll.ends_at ? new Date(poll.ends_at) < new Date() : false
@@ -66,15 +70,44 @@ export default function PollCard({ poll, currentProfile }: Props) {
     return Math.round((getVoteCount(optionId) / totalVotes) * 100)
   }
 
+  async function handleDelete() {
+    setDeleting(true)
+    await supabase.from('poll_votes').delete().eq('poll_id', poll.id)
+    await supabase.from('poll_options').delete().eq('poll_id', poll.id)
+    await supabase.from('polls').delete().eq('id', poll.id)
+    onDeleted?.(poll.id)
+  }
+
   return (
     <div className="bg-surface border border-base rounded-2xl overflow-hidden">
-      {/* Üst bant: tarih + öncelik */}
+      {/* Üst bant: tarih + öncelik + sil */}
       <div className="flex items-center justify-between px-5 py-3 border-b border-base bg-surface2">
         <div className="flex items-center gap-2">
           <div className={`w-2 h-2 rounded-full flex-shrink-0 ${priority.dot}`} />
           <span className={`text-xs font-semibold ${priority.text}`}>{priority.label}</span>
         </div>
-        <span className="text-xs text-muted">{formatRelativeTime(poll.created_at)}</span>
+        <div className="flex items-center gap-2">
+          <span className="text-xs text-muted">{formatRelativeTime(poll.created_at)}</span>
+          {canDelete && !deleteConfirm && (
+            <button onClick={() => setDeleteConfirm(true)} className="text-muted hover:text-red-400 transition p-0.5">
+              <Trash2 className="w-3.5 h-3.5" />
+            </button>
+          )}
+          {canDelete && deleteConfirm && (
+            <div className="flex items-center gap-1.5">
+              <AlertTriangle className="w-3.5 h-3.5 text-red-400" />
+              <button type="button" onClick={() => setDeleteConfirm(false)} className="text-xs text-muted hover:text-accent transition">Vazgeç</button>
+              <button
+                type="button"
+                onClick={handleDelete}
+                disabled={deleting}
+                className="bg-red-500 hover:bg-red-600 text-white text-xs font-semibold rounded-lg px-2.5 py-1 transition disabled:opacity-50 flex items-center gap-1"
+              >
+                {deleting ? <Loader2 className="w-3 h-3 animate-spin" /> : 'Sil'}
+              </button>
+            </div>
+          )}
+        </div>
       </div>
 
       <div className="p-5 space-y-4">

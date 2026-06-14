@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Trash2, X } from 'lucide-react'
+import { Trash2, X, AlertTriangle, Loader2 } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import Avatar from '@/components/ui/Avatar'
 import { formatRelativeTime } from '@/lib/utils'
@@ -34,6 +34,8 @@ export default function ActivityCard({ activity, currentProfile, canDelete, onDe
   const [responses, setResponses] = useState<ResponseWithProfile[]>([])
   const [submitting, setSubmitting] = useState(false)
   const [showDetail, setShowDetail] = useState(false)
+  const [deleteConfirm, setDeleteConfirm] = useState(false)
+  const [deleting, setDeleting] = useState(false)
   const supabase = createClient()
 
   const myResponse = responses.find(r => r.user_id === currentProfile.id)
@@ -80,6 +82,7 @@ export default function ActivityCard({ activity, currentProfile, canDelete, onDe
   }
 
   async function handleDelete() {
+    setDeleting(true)
     await supabase.from('activities').delete().eq('id', activity.id)
     onDeleted(activity.id)
   }
@@ -100,10 +103,24 @@ export default function ActivityCard({ activity, currentProfile, canDelete, onDe
             </div>
             <p className="text-sm leading-relaxed">{activity.title}</p>
           </div>
-          {canDelete && (
-            <button onClick={handleDelete} className="text-muted hover:text-red-400 transition p-1 flex-shrink-0">
+          {canDelete && !deleteConfirm && (
+            <button onClick={() => setDeleteConfirm(true)} className="text-muted hover:text-red-400 transition p-1 flex-shrink-0">
               <Trash2 className="w-3.5 h-3.5" />
             </button>
+          )}
+          {canDelete && deleteConfirm && (
+            <div className="flex items-center gap-1.5 flex-shrink-0">
+              <AlertTriangle className="w-3.5 h-3.5 text-red-400" />
+              <button type="button" onClick={() => setDeleteConfirm(false)} className="text-xs text-muted hover:text-accent transition">Vazgeç</button>
+              <button
+                type="button"
+                onClick={handleDelete}
+                disabled={deleting}
+                className="bg-red-500 hover:bg-red-600 text-white text-xs font-semibold rounded-lg px-2.5 py-1 transition disabled:opacity-50 flex items-center gap-1"
+              >
+                {deleting ? <Loader2 className="w-3 h-3 animate-spin" /> : 'Sil'}
+              </button>
+            </div>
           )}
         </div>
 

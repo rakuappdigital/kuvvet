@@ -177,7 +177,15 @@ export default function GroupClient({ group, currentProfile, myRole: _myRole, in
             </div>
           ) : (
             <div className="space-y-3">
-              {activePolls.map(poll => <PollCard key={poll.id} poll={poll} currentProfile={currentProfile} />)}
+              {activePolls.map(poll => (
+                <PollCard
+                  key={poll.id}
+                  poll={poll}
+                  currentProfile={currentProfile}
+                  canDelete={poll.created_by === currentProfile.id || canManage}
+                  onDeleted={id => setPolls(prev => prev.filter(x => x.id !== id))}
+                />
+              ))}
             </div>
           )}
         </div>

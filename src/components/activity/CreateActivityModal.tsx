@@ -15,8 +15,7 @@ interface Props {
 export default function CreateActivityModal({ groupId, userId, onCreated, onClose }: Props) {
   const [title, setTitle] = useState('')
   const [hasDate, setHasDate] = useState(false)
-  const [date, setDate] = useState('')
-  const [time, setTime] = useState('')
+  const [eventAt, setEventAt] = useState('')
   const [loading, setLoading] = useState(false)
   const supabase = createClient()
 
@@ -25,10 +24,7 @@ export default function CreateActivityModal({ groupId, userId, onCreated, onClos
     if (!title.trim()) return
     setLoading(true)
 
-    let event_at = null
-    if (hasDate && date) {
-      event_at = new Date(`${date}T${time || '00:00'}`).toISOString()
-    }
+    const event_at = hasDate && eventAt ? new Date(eventAt).toISOString() : null
 
     await supabase.from('activities').insert({
       group_id: groupId,
@@ -73,7 +69,7 @@ export default function CreateActivityModal({ groupId, userId, onCreated, onClos
           <div className="space-y-3">
             <button
               type="button"
-              onClick={() => setHasDate(v => !v)}
+              onClick={() => { setHasDate(v => !v); setEventAt('') }}
               className={`flex items-center gap-2 text-sm transition ${hasDate ? 'text-accent' : 'text-muted hover:text-accent'}`}
             >
               <Calendar className="w-4 h-4" />
@@ -81,27 +77,14 @@ export default function CreateActivityModal({ groupId, userId, onCreated, onClos
             </button>
 
             {hasDate && (
-              <div className="grid grid-cols-2 gap-2">
-                <div className="space-y-1">
-                  <label className="block text-xs text-muted">Tarih</label>
-                  <input
-                    type="date"
-                    value={date}
-                    onChange={e => setDate(e.target.value)}
-                    required={hasDate}
-                    className="w-full bg-surface2 border border-base rounded-xl px-3 py-2.5 text-sm focus:ring-1 ring-accent transition"
-                  />
-                </div>
-                <div className="space-y-1">
-                  <label className="block text-xs text-muted">Saat <span className="opacity-60">(isteğe bağlı)</span></label>
-                  <input
-                    type="time"
-                    value={time}
-                    onChange={e => setTime(e.target.value)}
-                    className="w-full bg-surface2 border border-base rounded-xl px-3 py-2.5 text-sm focus:ring-1 ring-accent transition"
-                  />
-                </div>
-              </div>
+              <input
+                type="datetime-local"
+                value={eventAt}
+                onChange={e => setEventAt(e.target.value)}
+                required={hasDate}
+                className="w-full bg-surface2 border border-base rounded-xl px-3 py-2.5 text-sm focus:ring-1 ring-accent transition"
+                style={{ colorScheme: 'dark' }}
+              />
             )}
           </div>
 
