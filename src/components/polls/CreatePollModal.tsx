@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { X, Plus, Loader2, Trash2 } from 'lucide-react'
+import { X, Plus, Loader2, Trash2, Calendar } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import Button from '@/components/ui/Button'
 import type { PollPriority } from '@/types/database'
@@ -23,7 +23,9 @@ export default function CreatePollModal({ groupId, userId, onCreated, onClose }:
   const [question, setQuestion] = useState('')
   const [options, setOptions] = useState(['', ''])
   const [allowMultiple, setAllowMultiple] = useState(false)
-  const [endsAt, setEndsAt] = useState('')
+  const [hasEndsAt, setHasEndsAt] = useState(false)
+  const [endsAtDate, setEndsAtDate] = useState('')
+  const [endsAtTime, setEndsAtTime] = useState('')
   const [priority, setPriority] = useState<PollPriority>('normal')
   const [loading, setLoading] = useState(false)
   const supabase = createClient()
@@ -53,7 +55,7 @@ export default function CreatePollModal({ groupId, userId, onCreated, onClose }:
         question: question.trim(),
         allow_multiple: allowMultiple,
         priority,
-        ends_at: endsAt ? new Date(endsAt).toISOString() : null,
+        ends_at: hasEndsAt && endsAtDate ? new Date(`${endsAtDate}T${endsAtTime || '23:59'}`).toISOString() : null,
       })
       .select()
       .single()
@@ -152,10 +154,29 @@ export default function CreatePollModal({ groupId, userId, onCreated, onClose }:
               </div>
               <span className="text-sm">Birden fazla seçim</span>
             </label>
-            <div className="space-y-1.5">
-              <label className="block text-xs text-muted">Bitiş tarihi <span className="opacity-60">(isteğe bağlı)</span></label>
-              <input type="datetime-local" value={endsAt} onChange={e => setEndsAt(e.target.value)}
-                className="w-full bg-surface border border-base rounded-xl px-4 py-2.5 text-sm focus:ring-1 ring-accent transition" />
+            <div className="space-y-2">
+              <button
+                type="button"
+                onClick={() => setHasEndsAt(v => !v)}
+                className={`flex items-center gap-2 text-sm transition ${hasEndsAt ? 'text-accent' : 'text-muted hover:text-accent'}`}
+              >
+                <Calendar className="w-4 h-4" />
+                {hasEndsAt ? 'Bitiş tarihi kaldır' : 'Bitiş tarihi ekle (isteğe bağlı)'}
+              </button>
+              {hasEndsAt && (
+                <div className="grid grid-cols-2 gap-2">
+                  <div className="space-y-1">
+                    <label className="block text-xs text-muted">Tarih</label>
+                    <input type="date" value={endsAtDate} onChange={e => setEndsAtDate(e.target.value)} required={hasEndsAt}
+                      className="w-full bg-surface border border-base rounded-xl px-3 py-2 text-sm focus:ring-1 ring-accent transition" />
+                  </div>
+                  <div className="space-y-1">
+                    <label className="block text-xs text-muted">Saat <span className="opacity-60">(isteğe bağlı)</span></label>
+                    <input type="time" value={endsAtTime} onChange={e => setEndsAtTime(e.target.value)}
+                      className="w-full bg-surface border border-base rounded-xl px-3 py-2 text-sm focus:ring-1 ring-accent transition" />
+                  </div>
+                </div>
+              )}
             </div>
           </div>
 

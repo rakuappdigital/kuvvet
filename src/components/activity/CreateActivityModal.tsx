@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { X, Loader2 } from 'lucide-react'
+import { X, Loader2, Calendar } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import Button from '@/components/ui/Button'
 
@@ -14,7 +14,9 @@ interface Props {
 
 export default function CreateActivityModal({ groupId, userId, onCreated, onClose }: Props) {
   const [title, setTitle] = useState('')
-  const [eventAt, setEventAt] = useState('')
+  const [hasDate, setHasDate] = useState(false)
+  const [date, setDate] = useState('')
+  const [time, setTime] = useState('')
   const [loading, setLoading] = useState(false)
   const supabase = createClient()
 
@@ -23,11 +25,16 @@ export default function CreateActivityModal({ groupId, userId, onCreated, onClos
     if (!title.trim()) return
     setLoading(true)
 
+    let event_at = null
+    if (hasDate && date) {
+      event_at = new Date(`${date}T${time || '00:00'}`).toISOString()
+    }
+
     await supabase.from('activities').insert({
       group_id: groupId,
       created_by: userId,
       title: title.trim(),
-      event_at: eventAt ? new Date(eventAt).toISOString() : null,
+      event_at,
     })
 
     onCreated()
@@ -52,7 +59,7 @@ export default function CreateActivityModal({ groupId, userId, onCreated, onClos
             <textarea
               value={title}
               onChange={e => setTitle(e.target.value)}
-              placeholder="Cuma akşamı buluşma — Kadıköy, 20:00"
+              placeholder="Cuma akşamı buluşma — Kadıköy"
               maxLength={300}
               rows={3}
               required
@@ -62,17 +69,40 @@ export default function CreateActivityModal({ groupId, userId, onCreated, onClos
             <p className="text-xs text-muted text-right">{title.length}/300</p>
           </div>
 
-          <div className="space-y-1.5">
-            <label className="block text-xs font-medium text-muted uppercase tracking-widest">
-              Tarih & saat <span className="normal-case opacity-60">(isteğe bağlı)</span>
-            </label>
-            <input
-              type="datetime-local"
-              value={eventAt}
-              onChange={e => setEventAt(e.target.value)}
-              className="w-full bg-surface2 border border-base rounded-xl px-4 py-3 text-sm focus:ring-1 ring-accent transition"
-            />
-            <p className="text-xs text-muted">Tarih geçince aktivite arşive taşınır.</p>
+          {/* Tarih toggle */}
+          <div className="space-y-3">
+            <button
+              type="button"
+              onClick={() => setHasDate(v => !v)}
+              className={`flex items-center gap-2 text-sm transition ${hasDate ? 'text-accent' : 'text-muted hover:text-accent'}`}
+            >
+              <Calendar className="w-4 h-4" />
+              {hasDate ? 'Tarih & saat kaldır' : 'Tarih & saat ekle (isteğe bağlı)'}
+            </button>
+
+            {hasDate && (
+              <div className="grid grid-cols-2 gap-2">
+                <div className="space-y-1">
+                  <label className="block text-xs text-muted">Tarih</label>
+                  <input
+                    type="date"
+                    value={date}
+                    onChange={e => setDate(e.target.value)}
+                    required={hasDate}
+                    className="w-full bg-surface2 border border-base rounded-xl px-3 py-2.5 text-sm focus:ring-1 ring-accent transition"
+                  />
+                </div>
+                <div className="space-y-1">
+                  <label className="block text-xs text-muted">Saat <span className="opacity-60">(isteğe bağlı)</span></label>
+                  <input
+                    type="time"
+                    value={time}
+                    onChange={e => setTime(e.target.value)}
+                    className="w-full bg-surface2 border border-base rounded-xl px-3 py-2.5 text-sm focus:ring-1 ring-accent transition"
+                  />
+                </div>
+              </div>
+            )}
           </div>
 
           <div className="flex gap-2">
