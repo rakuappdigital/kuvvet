@@ -1,5 +1,42 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="80" height="80">
-  <circle cx="40" cy="40" r="40" fill="hsl(45, 65%, 55%)"/>
-  <circle cx="40" cy="30" r="14" fill="hsl(45, 50%, 85%)"/>
-  <ellipse cx="40" cy="72" rx="22" ry="16" fill="hsl(45, 50%, 85%)"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- Sherlock Holmes -->
+  <rect width="100" height="100" fill="#1A1410"/>
+  <path d="M22 100 L30 74 Q50 82 70 74 L78 100Z" fill="#2A2018"/>
+  <!-- Coat collar -->
+  <path d="M30 72 L36 62 L44 70 L50 66 L56 70 L64 62 L70 72Z" fill="#2A2018"/>
+  <path d="M42 68 L50 62 L58 68 L50 72Z" fill="#3A3028"/>
+  <!-- Deerstalker hat -->
+  <!-- Front peak -->
+  <path d="M28 42 L20 50 L32 48Z" fill="#8A7040"/>
+  <!-- Back peak -->
+  <path d="M72 42 L80 50 L68 48Z" fill="#8A7040"/>
+  <!-- Main hat body -->
+  <path d="M28 44 Q50 34 72 44 L70 52 Q50 56 30 52Z" fill="#9A8050"/>
+  <!-- Hat top dome -->
+  <path d="M32 44 Q50 32 68 44 Q65 36 50 32 Q35 36 32 44Z" fill="#8A7040"/>
+  <!-- Hat ear flaps (tied up) -->
+  <path d="M28 44 L24 38 L32 40Z" fill="#7A6030"/>
+  <path d="M72 44 L76 38 L68 40Z" fill="#7A6030"/>
+  <!-- Hat pattern (houndstooth dots) -->
+  <circle cx="40" cy="46" r="1.5" fill="#6A5820" opacity="0.6"/>
+  <circle cx="50" cy="44" r="1.5" fill="#6A5820" opacity="0.6"/>
+  <circle cx="60" cy="46" r="1.5" fill="#6A5820" opacity="0.6"/>
+  <!-- Face -->
+  <ellipse cx="50" cy="60" rx="18" ry="19" fill="#DEB090"/>
+  <!-- Sharp eyes -->
+  <ellipse cx="42" cy="57" rx="4" ry="2.5" fill="white"/>
+  <circle cx="42" cy="57" r="1.8" fill="#1A0808"/>
+  <ellipse cx="58" cy="57" rx="4" ry="2.5" fill="white"/>
+  <circle cx="58" cy="57" r="1.8" fill="#1A0808"/>
+  <!-- Eyebrows - sharp -->
+  <path d="M38 54 Q42 51 46 54" stroke="#604020" stroke-width="2" fill="none" stroke-linecap="round"/>
+  <path d="M54 54 Q58 51 62 54" stroke="#604020" stroke-width="2" fill="none" stroke-linecap="round"/>
+  <!-- Pipe -->
+  <path d="M56 68 Q62 64 70 66 Q72 70 68 72 Q62 70 56 72Z" fill="#5A3010"/>
+  <circle cx="70" cy="68" r="5" fill="#3A1A08"/>
+  <circle cx="70" cy="68" r="3" fill="#280E04"/>
+  <!-- Nose - sharp -->
+  <path d="M47 62 L45 67 L50 68 L55 67 L53 62" fill="#C09070"/>
+  <!-- Lips -->
+  <path d="M44 73 Q50 76 56 73" stroke="#883030" stroke-width="1.5" fill="none" stroke-linecap="round"/>
 </svg>

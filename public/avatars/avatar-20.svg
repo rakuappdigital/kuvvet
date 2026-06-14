@@ -1,5 +1,39 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="80" height="80">
-  <circle cx="40" cy="40" r="40" fill="hsl(135, 65%, 55%)"/>
-  <circle cx="40" cy="30" r="14" fill="hsl(135, 50%, 85%)"/>
-  <ellipse cx="40" cy="72" rx="22" ry="16" fill="hsl(135, 50%, 85%)"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- Bruce Lee -->
+  <rect width="100" height="100" fill="#201400"/>
+  <path d="M20 100 L28 70 Q50 80 72 70 L80 100Z" fill="#D4A020"/>
+  <!-- Yellow/black tracksuit top -->
+  <path d="M28 68 L34 58 L42 64 L50 60 L58 64 L66 58 L72 68Z" fill="#D4A020"/>
+  <!-- Black stripes on jacket -->
+  <path d="M34 58 L38 56 L40 62 L36 64Z" fill="#0A0A0A"/>
+  <path d="M66 58 L62 56 L60 62 L64 64Z" fill="#0A0A0A"/>
+  <!-- Black collar -->
+  <path d="M42 62 L50 58 L58 62 L56 66 L50 64 L44 66Z" fill="#0A0A0A"/>
+  <!-- Hair - black, neat, center parted -->
+  <path d="M28 42 Q50 28 72 42 L70 36 Q50 20 30 36Z" fill="#0A0808"/>
+  <!-- Face - determined, strong jaw -->
+  <ellipse cx="50" cy="54" rx="19" ry="21" fill="#C8906A"/>
+  <!-- Side hair -->
+  <rect x="28" y="40" width="6" height="20" rx="3" fill="#0A0808"/>
+  <rect x="66" y="40" width="6" height="20" rx="3" fill="#0A0808"/>
+  <!-- Intense focused eyes - slightly squinted -->
+  <path d="M35 50 Q41 47 47 50 Q41 53 35 50Z" fill="#1A0A08"/>
+  <ellipse cx="41" cy="50" rx="5" ry="2.5" fill="white"/>
+  <circle cx="41" cy="50" r="2" fill="#0A0808"/>
+  <path d="M35 49 Q41 46 47 49" stroke="#1A0808" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+  <path d="M53 50 Q59 47 65 50 Q59 53 53 50Z" fill="#1A0A08"/>
+  <ellipse cx="59" cy="50" rx="5" ry="2.5" fill="white"/>
+  <circle cx="59" cy="50" r="2" fill="#0A0808"/>
+  <path d="M53 49 Q59 46 65 49" stroke="#1A0808" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+  <!-- Strong eyebrows -->
+  <path d="M34 47 Q41 43 47 47" stroke="#0A0808" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  <path d="M53 47 Q59 43 65 47" stroke="#0A0808" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  <!-- Nose - strong -->
+  <path d="M47 55 L45 60 L47 62 L50 60 L53 62 L55 60 L53 55" fill="#A87048"/>
+  <!-- Determined set mouth -->
+  <path d="M42 65 Q50 69 58 65 L56 67 Q50 70 44 67Z" fill="#884030"/>
+  <!-- Nunchucks -->
+  <rect x="12" y="60" width="4" height="16" rx="2" fill="#3A2010"/>
+  <rect x="14" y="76" width="1" height="8" rx="0.5" fill="#C8A020"/>
+  <rect x="12" y="84" width="4" height="12" rx="2" fill="#3A2010"/>
 </svg>

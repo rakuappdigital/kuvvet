@@ -1,5 +1,38 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="80" height="80">
-  <circle cx="40" cy="40" r="40" fill="hsl(75, 65%, 55%)"/>
-  <circle cx="40" cy="30" r="14" fill="hsl(75, 50%, 85%)"/>
-  <ellipse cx="40" cy="72" rx="22" ry="16" fill="hsl(75, 50%, 85%)"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- Elvis Presley -->
+  <rect width="100" height="100" fill="#08082A"/>
+  <path d="M20 100 L28 70 Q50 80 72 70 L80 100Z" fill="#E8E4DC"/>
+  <!-- White jumpsuit with rhinestones -->
+  <path d="M28 68 L34 58 L40 64 L50 60 L60 64 L66 58 L72 68Z" fill="#E8E4DC"/>
+  <!-- Eagle/lightning belt buckle area -->
+  <path d="M42 62 L50 58 L58 62 L56 66 L50 64 L44 66Z" fill="#D4A020"/>
+  <!-- Rhinestone dots on collar -->
+  <circle cx="38" cy="62" r="1.5" fill="#D4A020"/>
+  <circle cx="42" cy="60" r="1.5" fill="#D4A020"/>
+  <circle cx="58" cy="60" r="1.5" fill="#D4A020"/>
+  <circle cx="62" cy="62" r="1.5" fill="#D4A020"/>
+  <!-- HUGE black pompadour -->
+  <path d="M22 42 Q26 16 50 14 Q74 16 78 42" fill="#0A0808"/>
+  <path d="M24 40 Q28 18 50 16 Q72 18 76 40 Q68 26 50 24 Q32 26 24 40Z" fill="#141010"/>
+  <!-- Pompadour front wave - very high -->
+  <path d="M24 40 Q32 22 46 26 Q52 22 64 28 Q70 32 74 40" stroke="#1C1410" stroke-width="6" fill="none" stroke-linecap="round"/>
+  <!-- Sideburns - thick -->
+  <rect x="22" y="42" width="10" height="28" rx="5" fill="#0A0808"/>
+  <rect x="68" y="42" width="10" height="28" rx="5" fill="#0A0808"/>
+  <!-- Face -->
+  <ellipse cx="50" cy="56" rx="18" ry="20" fill="#E0C090"/>
+  <!-- Eyes - bedroom eyes, slightly hooded -->
+  <ellipse cx="41" cy="52" rx="5" ry="2.8" fill="white"/>
+  <circle cx="41" cy="52" r="2.2" fill="#1A0A08"/>
+  <ellipse cx="59" cy="52" rx="5" ry="2.8" fill="white"/>
+  <circle cx="59" cy="52" r="2.2" fill="#1A0A08"/>
+  <!-- Eyebrows -->
+  <path d="M36 49 Q41 46 46 49" stroke="#0A0808" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+  <path d="M54 49 Q59 46 64 49" stroke="#0A0808" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+  <!-- Nose -->
+  <path d="M47 57 Q46 62 48 63 L52 63 Q54 62 53 57" fill="#C09870"/>
+  <!-- Iconic curled lip sneer -->
+  <path d="M42 66 Q46 70 50 69 Q54 70 58 66" fill="#AA4040"/>
+  <path d="M44 65 Q50 68 56 65" fill="#CC5050"/>
+  <path d="M48 65 Q50 67 52 65" stroke="#E86060" stroke-width="1" fill="none"/>
 </svg>

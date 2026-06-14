@@ -1,5 +1,23 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="80" height="80">
-  <circle cx="40" cy="40" r="40" fill="hsl(180, 65%, 55%)"/>
-  <circle cx="40" cy="30" r="14" fill="hsl(180, 50%, 85%)"/>
-  <ellipse cx="40" cy="72" rx="22" ry="16" fill="hsl(180, 50%, 85%)"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- Batman -->
+  <rect width="100" height="100" fill="#08080E"/>
+  <path d="M20 100 L26 72 Q50 80 74 72 L80 100Z" fill="#141420"/>
+  <!-- Cape/shoulders -->
+  <path d="M14 100 L22 68 L30 72 Q50 78 70 72 L78 68 L86 100Z" fill="#0A0A14"/>
+  <!-- Bat cowl - main -->
+  <path d="M26 60 Q26 30 50 26 Q74 30 74 60 L68 62 Q50 66 32 62Z" fill="#141414"/>
+  <!-- Bat ears - LEFT -->
+  <path d="M26 44 L18 18 L34 36Z" fill="#141414"/>
+  <!-- Bat ears - RIGHT -->
+  <path d="M74 44 L82 18 L66 36Z" fill="#141414"/>
+  <!-- Jaw area (visible skin) -->
+  <path d="M36 60 Q50 66 64 60 L62 66 Q50 72 38 66Z" fill="#C09070"/>
+  <!-- White eye lenses -->
+  <ellipse cx="40" cy="48" rx="8" ry="5" fill="white" opacity="0.9"/>
+  <ellipse cx="60" cy="48" rx="8" ry="5" fill="white" opacity="0.9"/>
+  <!-- Eye glints -->
+  <ellipse cx="40" cy="48" rx="6" ry="3.5" fill="#D0D8E8" opacity="0.8"/>
+  <ellipse cx="60" cy="48" rx="6" ry="3.5" fill="#D0D8E8" opacity="0.8"/>
+  <!-- Cowl highlight -->
+  <path d="M34 32 Q50 28 66 32" stroke="#282828" stroke-width="2" fill="none"/>
 </svg>

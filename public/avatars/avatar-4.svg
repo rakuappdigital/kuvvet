@@ -1,5 +1,28 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="80" height="80">
-  <circle cx="40" cy="40" r="40" fill="hsl(120, 65%, 55%)"/>
-  <circle cx="40" cy="30" r="14" fill="hsl(120, 50%, 85%)"/>
-  <ellipse cx="40" cy="72" rx="22" ry="16" fill="hsl(120, 50%, 85%)"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- Einstein -->
+  <rect width="100" height="100" fill="#1E1A14"/>
+  <path d="M22 100 L30 76 Q50 84 70 76 L78 100Z" fill="#2A2420"/>
+  <!-- Wild white hair - left puff -->
+  <ellipse cx="22" cy="42" rx="16" ry="22" fill="#E8E4DC"/>
+  <!-- Wild white hair - right puff -->
+  <ellipse cx="78" cy="42" rx="16" ry="22" fill="#E8E4DC"/>
+  <!-- Hair top - wild strands -->
+  <path d="M28 30 Q32 14 38 20 Q42 8 48 18 Q50 6 52 18 Q58 8 62 20 Q68 14 72 30" fill="#E8E4DC"/>
+  <!-- Face -->
+  <ellipse cx="50" cy="55" rx="20" ry="22" fill="#E0C090"/>
+  <!-- Hair sides connecting over face top -->
+  <path d="M30 36 Q50 28 70 36" fill="#E8E4DC"/>
+  <!-- Eyebrows - bushy white -->
+  <path d="M36 46 Q42 43 48 46" stroke="#D8D4CC" stroke-width="3" fill="none" stroke-linecap="round"/>
+  <path d="M52 46 Q58 43 64 46" stroke="#D8D4CC" stroke-width="3" fill="none" stroke-linecap="round"/>
+  <!-- Eyes -->
+  <ellipse cx="42" cy="51" rx="4.5" ry="3" fill="white"/>
+  <circle cx="42" cy="51" r="2" fill="#2A1808"/>
+  <ellipse cx="58" cy="51" rx="4.5" ry="3" fill="white"/>
+  <circle cx="58" cy="51" r="2" fill="#2A1808"/>
+  <!-- Mustache - large gray -->
+  <path d="M40 62 Q50 68 60 62" fill="#B0A898"/>
+  <path d="M40 62 Q50 65 60 62" fill="#C8C0B0"/>
+  <!-- Nose -->
+  <ellipse cx="50" cy="58" rx="3" ry="4" fill="#C8A070"/>
 </svg>

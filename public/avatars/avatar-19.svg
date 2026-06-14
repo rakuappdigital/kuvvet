@@ -1,5 +1,39 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="80" height="80">
-  <circle cx="40" cy="40" r="40" fill="hsl(255, 65%, 55%)"/>
-  <circle cx="40" cy="30" r="14" fill="hsl(255, 50%, 85%)"/>
-  <ellipse cx="40" cy="72" rx="22" ry="16" fill="hsl(255, 50%, 85%)"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- Charlie Chaplin -->
+  <rect width="100" height="100" fill="#141414"/>
+  <path d="M22 100 L28 72 Q50 80 72 72 L78 100Z" fill="#141414"/>
+  <!-- Black suit -->
+  <path d="M28 70 L34 60 L42 68 L50 64 L58 68 L66 60 L72 70Z" fill="#141414"/>
+  <!-- White shirt/bow tie -->
+  <path d="M44 66 L50 60 L56 66 L53 68 L50 66 L47 68Z" fill="#F0EDE8"/>
+  <path d="M47 64 L50 60 L53 64 L50 62Z" fill="#0A0A0A"/>
+  <!-- Bowler hat - small and round -->
+  <ellipse cx="50" cy="36" rx="20" ry="7" fill="#0A0A0A"/>
+  <path d="M36 36 Q50 24 64 36 Q60 28 50 26 Q40 28 36 36Z" fill="#141414"/>
+  <!-- Hat brim highlight -->
+  <path d="M30 36 L70 36" stroke="#282828" stroke-width="1.5" fill="none"/>
+  <!-- Hat band -->
+  <rect x="34" y="34" width="32" height="3" rx="1" fill="#1A1A1A"/>
+  <!-- Cane -->
+  <rect x="68" y="50" width="4" height="50" rx="2" fill="#5A3810"/>
+  <path d="M64 50 Q68 46 72 50" fill="none" stroke="#5A3810" stroke-width="4" stroke-linecap="round"/>
+  <!-- Face - pale -->
+  <ellipse cx="50" cy="56" rx="18" ry="19" fill="#F0E8D8"/>
+  <!-- Side hair visible -->
+  <rect x="28" y="40" width="6" height="20" rx="3" fill="#0A0A0A"/>
+  <rect x="66" y="40" width="6" height="20" rx="3" fill="#0A0A0A"/>
+  <!-- Expressive eyes - wide -->
+  <ellipse cx="41" cy="52" rx="5.5" ry="4" fill="white"/>
+  <circle cx="41" cy="53" r="2.5" fill="#1A0808"/>
+  <ellipse cx="59" cy="52" rx="5.5" ry="4" fill="white"/>
+  <circle cx="59" cy="53" r="2.5" fill="#1A0808"/>
+  <!-- Raised eyebrows - sad/funny expression -->
+  <path d="M36 48 Q41 44 46 48" stroke="#0A0A0A" stroke-width="2" fill="none" stroke-linecap="round"/>
+  <path d="M54 48 Q59 44 64 48" stroke="#0A0A0A" stroke-width="2" fill="none" stroke-linecap="round"/>
+  <!-- Toothbrush mustache - small and iconic -->
+  <rect x="46" y="62" width="8" height="5" rx="1.5" fill="#0A0A0A"/>
+  <!-- Nose -->
+  <ellipse cx="50" cy="59" rx="3" ry="2.5" fill="#D8C0A0"/>
+  <!-- Slight sad smile -->
+  <path d="M43 69 Q50 73 57 69" stroke="#885040" stroke-width="1.5" fill="none" stroke-linecap="round"/>
 </svg>

@@ -1,5 +1,38 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="80" height="80">
-  <circle cx="40" cy="40" r="40" fill="hsl(15, 65%, 55%)"/>
-  <circle cx="40" cy="30" r="14" fill="hsl(15, 50%, 85%)"/>
-  <ellipse cx="40" cy="72" rx="22" ry="16" fill="hsl(15, 50%, 85%)"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- Marilyn Monroe -->
+  <rect width="100" height="100" fill="#280A1E"/>
+  <path d="M20 100 L28 72 Q50 80 72 72 L80 100Z" fill="#F0E8E0"/>
+  <!-- White dress top -->
+  <path d="M28 70 L34 62 L38 66 L50 62 L62 66 L66 62 L72 70Z" fill="#F0E8E0"/>
+  <!-- Platinum wavy hair - left side -->
+  <path d="M22 40 Q16 52 18 68 Q24 62 26 52 Q28 46 28 40" fill="#E8E4DC"/>
+  <!-- Platinum wavy hair - right side -->
+  <path d="M78 40 Q84 52 82 68 Q76 62 74 52 Q72 46 72 40" fill="#E8E4DC"/>
+  <!-- Hair top wave -->
+  <path d="M26 34 Q34 22 50 26 Q66 22 74 34 L72 40 Q62 30 50 34 Q38 30 28 40Z" fill="#E8E4DC"/>
+  <!-- Wavy hair details -->
+  <path d="M24 46 Q20 56 22 64" stroke="#D0CCC4" stroke-width="3" fill="none" stroke-linecap="round"/>
+  <path d="M76 46 Q80 56 78 64" stroke="#D0CCC4" stroke-width="3" fill="none" stroke-linecap="round"/>
+  <!-- Face -->
+  <ellipse cx="50" cy="54" rx="20" ry="21" fill="#F0C8A0"/>
+  <!-- Arched eyebrows - thin elegant -->
+  <path d="M36 47 Q41 43 46 46" stroke="#2A1808" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+  <path d="M54 46 Q59 43 64 47" stroke="#2A1808" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+  <!-- Eyes - hooded/sultry -->
+  <ellipse cx="41" cy="51" rx="5.5" ry="3" fill="white"/>
+  <circle cx="41" cy="51" r="2.2" fill="#1A0A08"/>
+  <ellipse cx="59" cy="51" rx="5.5" ry="3" fill="white"/>
+  <circle cx="59" cy="51" r="2.2" fill="#1A0A08"/>
+  <!-- Lashes hint -->
+  <path d="M35.5 50 Q36 48 37 49" stroke="#1A0A08" stroke-width="1.2" fill="none"/>
+  <path d="M64.5 50 Q64 48 63 49" stroke="#1A0A08" stroke-width="1.2" fill="none"/>
+  <!-- Nose -->
+  <ellipse cx="50" cy="57" rx="3" ry="2.5" fill="#DCA880"/>
+  <!-- Red lips - full and iconic -->
+  <path d="M40 64 Q45 62 50 63 Q55 62 60 64 Q56 70 50 71 Q44 70 40 64Z" fill="#CC1818"/>
+  <path d="M40 64 Q45 63 50 64 Q55 63 60 64 Q56 68 50 69 Q44 68 40 64Z" fill="#E82828"/>
+  <!-- Cupid's bow -->
+  <path d="M42 63 Q46 61 50 63 Q54 61 58 63" stroke="#AA1010" stroke-width="1" fill="none"/>
+  <!-- Beauty mole -->
+  <circle cx="58" cy="60" r="2" fill="#1A0A08"/>
 </svg>

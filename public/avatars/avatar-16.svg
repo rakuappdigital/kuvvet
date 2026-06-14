@@ -1,5 +1,34 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="80" height="80">
-  <circle cx="40" cy="40" r="40" fill="hsl(195, 65%, 55%)"/>
-  <circle cx="40" cy="30" r="14" fill="hsl(195, 50%, 85%)"/>
-  <ellipse cx="40" cy="72" rx="22" ry="16" fill="hsl(195, 50%, 85%)"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- James Dean -->
+  <rect width="100" height="100" fill="#1C1208"/>
+  <path d="M20 100 L28 72 Q50 80 72 72 L80 100Z" fill="#0A0A0A"/>
+  <!-- Leather jacket -->
+  <path d="M28 70 L34 60 L40 66 L50 62 L60 66 L66 60 L72 70Z" fill="#181818"/>
+  <!-- White t-shirt collar -->
+  <path d="M42 64 L50 60 L58 64 L56 68 L50 66 L44 68Z" fill="#E8E4DC"/>
+  <!-- Leather jacket lapels -->
+  <path d="M34 60 L42 64 L44 56 L38 52Z" fill="#141414"/>
+  <path d="M66 60 L58 64 L56 56 L62 52Z" fill="#141414"/>
+  <!-- Dark brown pompadour - swept side -->
+  <path d="M26 40 Q28 24 40 22 Q52 18 62 24 Q72 28 70 40" fill="#1A1008"/>
+  <path d="M28 38 Q34 20 50 20 Q66 20 70 38 Q62 28 50 26 Q38 28 28 38Z" fill="#241810"/>
+  <!-- Pompadour front wave - swept right -->
+  <path d="M28 38 Q36 28 46 32 Q54 28 68 36" stroke="#301E10" stroke-width="5" fill="none" stroke-linecap="round"/>
+  <!-- Face -->
+  <ellipse cx="50" cy="54" rx="19" ry="21" fill="#E0C090"/>
+  <!-- Side hair -->
+  <rect x="28" y="37" width="6" height="24" rx="3" fill="#1A1008"/>
+  <rect x="66" y="37" width="6" height="24" rx="3" fill="#1A1008"/>
+  <!-- Eyes - cool/brooding -->
+  <ellipse cx="41" cy="51" rx="5" ry="3" fill="white"/>
+  <circle cx="41" cy="51" r="2.2" fill="#1A0A08"/>
+  <ellipse cx="59" cy="51" rx="5" ry="3" fill="white"/>
+  <circle cx="59" cy="51" r="2.2" fill="#1A0A08"/>
+  <!-- Eyebrows -->
+  <path d="M36 48 Q41 45 46 48" stroke="#1A0A08" stroke-width="2" fill="none" stroke-linecap="round"/>
+  <path d="M54 48 Q59 45 64 48" stroke="#1A0A08" stroke-width="2" fill="none" stroke-linecap="round"/>
+  <!-- Nose -->
+  <path d="M47 56 Q46 61 48 62 L52 62 Q54 61 53 56" fill="#C09870"/>
+  <!-- Slight smirk -->
+  <path d="M43 65 Q50 69 58 65 Q55 67 50 67 Q45 67 43 65Z" fill="#AA6040"/>
 </svg>

@@ -1,5 +1,29 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="80" height="80">
-  <circle cx="40" cy="40" r="40" fill="hsl(0, 65%, 55%)"/>
-  <circle cx="40" cy="30" r="14" fill="hsl(0, 50%, 85%)"/>
-  <ellipse cx="40" cy="72" rx="22" ry="16" fill="hsl(0, 50%, 85%)"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- Leonardo da Vinci -->
+  <rect width="100" height="100" fill="#201408"/>
+  <path d="M20 100 L28 74 Q50 82 72 74 L80 100Z" fill="#2A1A08"/>
+  <!-- Long white beard -->
+  <path d="M30 58 Q28 80 50 90 Q72 80 70 58 L64 66 Q50 80 36 66Z" fill="#D8D0C0"/>
+  <path d="M36 60 Q34 78 50 86 Q66 78 64 60" fill="#E8E0D0"/>
+  <!-- Red beret -->
+  <ellipse cx="50" cy="30" rx="24" ry="11" fill="#882020"/>
+  <path d="M26 30 Q50 20 74 30 Q72 22 50 17 Q28 22 26 30Z" fill="#AA2828"/>
+  <rect x="26" y="30" width="48" height="5" rx="2" fill="#661818"/>
+  <!-- Beret side tilt - extra puff -->
+  <ellipse cx="68" cy="26" rx="10" ry="7" fill="#882020"/>
+  <!-- Face -->
+  <ellipse cx="50" cy="54" rx="19" ry="21" fill="#C0905A"/>
+  <!-- White mustache -->
+  <path d="M39 63 Q50 69 61 63" fill="#D0C8B8"/>
+  <path d="M40 63 Q50 67 60 63" fill="#E0D8C8"/>
+  <!-- Eyes - wise -->
+  <ellipse cx="42" cy="50" rx="4.5" ry="2.8" fill="white"/>
+  <circle cx="42" cy="50" r="2" fill="#1A0A08"/>
+  <ellipse cx="58" cy="50" rx="4.5" ry="2.8" fill="white"/>
+  <circle cx="58" cy="50" r="2" fill="#1A0A08"/>
+  <!-- Eyebrows -->
+  <path d="M37 47 Q42 44 47 47" stroke="#C0A880" stroke-width="2" fill="none" stroke-linecap="round"/>
+  <path d="M53 47 Q58 44 63 47" stroke="#C0A880" stroke-width="2" fill="none" stroke-linecap="round"/>
+  <!-- Nose -->
+  <path d="M47 55 Q46 60 48 61 L52 61 Q54 60 53 55" stroke="#9A6838" stroke-width="1.2" fill="none"/>
 </svg>

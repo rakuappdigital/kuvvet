@@ -1,5 +1,24 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="80" height="80">
-  <circle cx="40" cy="40" r="40" fill="hsl(210, 65%, 55%)"/>
-  <circle cx="40" cy="30" r="14" fill="hsl(210, 50%, 85%)"/>
-  <ellipse cx="40" cy="72" rx="22" ry="16" fill="hsl(210, 50%, 85%)"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- Julius Caesar -->
+  <rect width="100" height="100" fill="#1E0838"/>
+  <path d="M20 100 L30 72 Q50 80 70 72 L80 100Z" fill="#F0EDE8"/>
+  <path d="M28 66 Q50 74 72 66 L70 72 Q50 78 30 72Z" fill="#C8A050"/>
+  <ellipse cx="50" cy="52" rx="18" ry="20" fill="#C09058"/>
+  <!-- Laurel wreath -->
+  <ellipse cx="50" cy="30" rx="22" ry="8" fill="none" stroke="#C8A020" stroke-width="3"/>
+  <ellipse cx="32" cy="32" rx="7" ry="10" fill="#6A8820" opacity="0.9"/>
+  <ellipse cx="38" cy="27" rx="7" ry="10" fill="#5A7818" opacity="0.9"/>
+  <ellipse cx="44" cy="24" rx="7" ry="10" fill="#6A8820" opacity="0.9"/>
+  <ellipse cx="50" cy="23" rx="6" ry="9" fill="#5A7818" opacity="0.9"/>
+  <ellipse cx="56" cy="24" rx="7" ry="10" fill="#6A8820" opacity="0.9"/>
+  <ellipse cx="62" cy="27" rx="7" ry="10" fill="#5A7818" opacity="0.9"/>
+  <ellipse cx="68" cy="32" rx="7" ry="10" fill="#6A8820" opacity="0.9"/>
+  <rect x="28" y="33" width="44" height="6" fill="#D4A828" rx="3"/>
+  <!-- Face features -->
+  <ellipse cx="42" cy="49" rx="4" ry="2.5" fill="white"/>
+  <circle cx="42" cy="49" r="1.8" fill="#1A0A08"/>
+  <ellipse cx="58" cy="49" rx="4" ry="2.5" fill="white"/>
+  <circle cx="58" cy="49" r="1.8" fill="#1A0A08"/>
+  <path d="M46 56 L48 58 L50 56 L52 58 L54 56" stroke="#805030" stroke-width="1.2" fill="none"/>
+  <path d="M44 64 Q50 68 56 64" stroke="#883020" stroke-width="1.8" fill="none" stroke-linecap="round"/>
 </svg>

@@ -1,5 +1,32 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="80" height="80">
-  <circle cx="40" cy="40" r="40" fill="hsl(330, 65%, 55%)"/>
-  <circle cx="40" cy="30" r="14" fill="hsl(330, 50%, 85%)"/>
-  <ellipse cx="40" cy="72" rx="22" ry="16" fill="hsl(330, 50%, 85%)"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- Gandalf -->
+  <rect width="100" height="100" fill="#080820"/>
+  <path d="M20 100 L26 72 Q50 82 74 72 L80 100Z" fill="#484060"/>
+  <!-- Gray robes -->
+  <path d="M26 70 L30 60 L38 66 L50 62 L62 66 L70 60 L74 70Z" fill="#484060"/>
+  <!-- Staff -->
+  <rect x="66" y="20" width="4" height="80" rx="2" fill="#6A5030"/>
+  <ellipse cx="68" cy="18" rx="6" ry="4" fill="#C8A020"/>
+  <!-- Tall pointed wizard hat - VERY TALL -->
+  <path d="M50 4 L35 44 L65 44Z" fill="#484060"/>
+  <path d="M32 44 L68 44 L64 50 L36 50Z" fill="#383050"/>
+  <!-- Hat band gold -->
+  <rect x="34" y="44" width="32" height="4" rx="1" fill="#A09020"/>
+  <!-- Long flowing white beard -->
+  <path d="M28 60 Q24 78 38 92 Q50 98 62 92 Q76 78 72 60" fill="#E0DCD4"/>
+  <path d="M32 62 Q28 78 42 90 Q50 94 58 90 Q72 78 68 62" fill="#F0ECE4"/>
+  <!-- Old wise face -->
+  <ellipse cx="50" cy="56" rx="18" ry="18" fill="#D0B890"/>
+  <!-- Bushy white eyebrows -->
+  <path d="M34 50 Q40 46 46 50" stroke="#E0DCD4" stroke-width="4" fill="none" stroke-linecap="round"/>
+  <path d="M54 50 Q60 46 66 50" stroke="#E0DCD4" stroke-width="4" fill="none" stroke-linecap="round"/>
+  <!-- Deep wise eyes -->
+  <ellipse cx="41" cy="54" rx="4.5" ry="3" fill="white"/>
+  <circle cx="41" cy="54" r="2" fill="#2A1808"/>
+  <ellipse cx="59" cy="54" rx="4.5" ry="3" fill="white"/>
+  <circle cx="59" cy="54" r="2" fill="#2A1808"/>
+  <!-- Nose -->
+  <path d="M46 58 L44 64 L46 65 L50 63 L54 65 L56 64 L54 58" fill="#B09060"/>
+  <!-- Mouth visible above beard -->
+  <path d="M43 68 Q50 72 57 68" stroke="#885840" stroke-width="1.5" fill="none" stroke-linecap="round"/>
 </svg>

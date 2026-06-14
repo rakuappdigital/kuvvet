@@ -1,5 +1,45 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="80" height="80">
-  <circle cx="40" cy="40" r="40" fill="hsl(315, 65%, 55%)"/>
-  <circle cx="40" cy="30" r="14" fill="hsl(315, 50%, 85%)"/>
-  <ellipse cx="40" cy="72" rx="22" ry="16" fill="hsl(315, 50%, 85%)"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- Audrey Hepburn -->
+  <rect width="100" height="100" fill="#0E180A"/>
+  <path d="M22 100 L28 72 Q50 80 72 72 L78 100Z" fill="#1A1A14"/>
+  <!-- Elegant black dress neckline -->
+  <path d="M28 70 L36 60 L44 66 L50 62 L56 66 L64 60 L72 70Z" fill="#141414"/>
+  <path d="M40 64 L50 58 L60 64 L56 68 L50 66 L44 68Z" fill="#1A1A1A"/>
+  <!-- Pearl necklace -->
+  <path d="M34 66 Q50 72 66 66" fill="none" stroke="white" stroke-width="0"/>
+  <circle cx="36" cy="66" r="2" fill="#F0EDE8"/>
+  <circle cx="40" cy="68" r="2" fill="#F0EDE8"/>
+  <circle cx="44" cy="69" r="2" fill="#F0EDE8"/>
+  <circle cx="48" cy="70" r="2" fill="#F0EDE8"/>
+  <circle cx="52" cy="70" r="2" fill="#F0EDE8"/>
+  <circle cx="56" cy="69" r="2" fill="#F0EDE8"/>
+  <circle cx="60" cy="68" r="2" fill="#F0EDE8"/>
+  <circle cx="64" cy="66" r="2" fill="#F0EDE8"/>
+  <!-- Elegant updo - high bun -->
+  <ellipse cx="50" cy="24" rx="16" ry="12" fill="#0A0808"/>
+  <ellipse cx="50" cy="20" rx="12" ry="9" fill="#141010"/>
+  <!-- Hair pin/decoration -->
+  <rect x="56" y="14" width="2" height="14" rx="1" fill="#D4A020"/>
+  <circle cx="57" cy="13" r="3" fill="#D4A020"/>
+  <!-- Face - elegant, long neck -->
+  <rect x="44" y="56" width="12" height="18" rx="6" fill="#E8C8A0"/>
+  <ellipse cx="50" cy="54" rx="18" ry="20" fill="#E8C8A0"/>
+  <!-- Very thin arched brows -->
+  <path d="M37 47 Q41 43 45 46" stroke="#1A0808" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+  <path d="M55 46 Q59 43 63 47" stroke="#1A0808" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+  <!-- Large expressive eyes -->
+  <ellipse cx="41" cy="51" rx="6" ry="3.5" fill="white"/>
+  <circle cx="41" cy="51" r="2.8" fill="#1A0808"/>
+  <ellipse cx="59" cy="51" rx="6" ry="3.5" fill="white"/>
+  <circle cx="59" cy="51" r="2.8" fill="#1A0808"/>
+  <!-- Eye lashes -->
+  <line x1="35" y1="50" x2="33" y2="48" stroke="#1A0808" stroke-width="1.2" stroke-linecap="round"/>
+  <line x1="37" y1="48.5" x2="36" y2="46" stroke="#1A0808" stroke-width="1.2" stroke-linecap="round"/>
+  <line x1="63" y1="50" x2="65" y2="48" stroke="#1A0808" stroke-width="1.2" stroke-linecap="round"/>
+  <line x1="61" y1="48.5" x2="62" y2="46" stroke="#1A0808" stroke-width="1.2" stroke-linecap="round"/>
+  <!-- Small elegant nose -->
+  <ellipse cx="50" cy="57" rx="2" ry="1.8" fill="#D0A880"/>
+  <!-- Thin elegant lips -->
+  <path d="M43 63 Q50 66 57 63" fill="#AA3838"/>
+  <path d="M44 62 Q50 64 56 62" fill="#CC4848"/>
 </svg>

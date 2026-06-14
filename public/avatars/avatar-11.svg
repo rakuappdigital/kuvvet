@@ -1,5 +1,32 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="80" height="80">
-  <circle cx="40" cy="40" r="40" fill="hsl(90, 65%, 55%)"/>
-  <circle cx="40" cy="30" r="14" fill="hsl(90, 50%, 85%)"/>
-  <ellipse cx="40" cy="72" rx="22" ry="16" fill="hsl(90, 50%, 85%)"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- Harry Potter -->
+  <rect width="100" height="100" fill="#280A0A"/>
+  <path d="M20 100 L28 72 Q50 80 72 72 L80 100Z" fill="#800020"/>
+  <!-- Robe collar/Gryffindor tie -->
+  <path d="M36 70 L44 62 L50 66 L56 62 L64 70Z" fill="#800020"/>
+  <path d="M46 64 L50 58 L54 64 L50 72Z" fill="#C8A020"/>
+  <!-- Wizard hat - slightly tilted -->
+  <path d="M50 8 L38 36 L62 36Z" fill="#1A1A1A"/>
+  <path d="M34 36 L66 36 L62 42 L38 42Z" fill="#141414"/>
+  <!-- Hat band -->
+  <rect x="36" y="36" width="28" height="4" rx="1" fill="#C8A020"/>
+  <!-- Messy black hair -->
+  <path d="M30 42 Q28 36 32 30 Q38 24 44 36" fill="#0A0808"/>
+  <path d="M70 42 Q72 36 68 30 Q62 24 56 36" fill="#0A0808"/>
+  <path d="M34 42 Q36 32 50 36 Q64 32 66 42" fill="#0A0808"/>
+  <!-- Face -->
+  <ellipse cx="50" cy="54" rx="18" ry="19" fill="#E0C090"/>
+  <!-- Round glasses -->
+  <circle cx="41" cy="51" r="7" fill="none" stroke="#5A3A10" stroke-width="2"/>
+  <circle cx="59" cy="51" r="7" fill="none" stroke="#5A3A10" stroke-width="2"/>
+  <line x1="48" y1="51" x2="52" y2="51" stroke="#5A3A10" stroke-width="2"/>
+  <!-- Eyes inside glasses -->
+  <circle cx="41" cy="51" r="2.5" fill="#2A1808"/>
+  <circle cx="59" cy="51" r="2.5" fill="#2A1808"/>
+  <!-- Lightning bolt scar on forehead -->
+  <path d="M48 44 L51 48 L48 52 L51 56" stroke="#C8A020" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- Nose -->
+  <ellipse cx="50" cy="57" rx="2.5" ry="2" fill="#C09870"/>
+  <!-- Mouth -->
+  <path d="M44 63 Q50 67 56 63" stroke="#883030" stroke-width="1.5" fill="none" stroke-linecap="round"/>
 </svg>

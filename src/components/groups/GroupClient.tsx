@@ -10,6 +10,7 @@ import PollCard from '@/components/polls/PollCard'
 import CreatePollModal from '@/components/polls/CreatePollModal'
 import InviteModal from '@/components/groups/InviteModal'
 import GroupSettingsModal from '@/components/groups/GroupSettingsModal'
+import MemberProfileModal from '@/components/groups/MemberProfileModal'
 import ActivityCard from '@/components/activity/ActivityCard'
 import CreateActivityModal from '@/components/activity/CreateActivityModal'
 import ArchiveWidget from '@/components/groups/ArchiveWidget'
@@ -55,6 +56,7 @@ export default function GroupClient({ group, currentProfile, myRole: _myRole, in
   const [showSettings, setShowSettings] = useState(false)
   const [showLeaveConfirm, setShowLeaveConfirm] = useState(false)
   const [groupData, setGroupData] = useState(group)
+  const [selectedMember, setSelectedMember] = useState<Member | null>(null)
   const canManage = _myRole === 'owner' || _myRole === 'admin'
   const canLeave = _myRole === 'member'
   const supabase = createClient()
@@ -219,22 +221,32 @@ export default function GroupClient({ group, currentProfile, myRole: _myRole, in
       {tab === 'members' && (
         <div className="bg-surface border border-base rounded-2xl overflow-hidden">
           {initialMembers.map((m, i) => (
-            <div key={m.profiles.id} className={`flex items-center gap-3 px-5 py-3.5 ${i > 0 ? 'border-t border-base' : ''}`}>
-              <Link href={`/profile/${m.profiles.username}`}>
-                <Avatar avatarId={m.profiles.avatar_id} username={m.profiles.username} size={34} className="ring-1 ring-border hover:opacity-80 transition" />
-              </Link>
+            <button
+              key={m.profiles.id}
+              onClick={() => setSelectedMember(m)}
+              className={`w-full flex items-center gap-3 px-5 py-3.5 text-left hover:bg-surface2 transition ${i > 0 ? 'border-t border-base' : ''}`}
+            >
+              <Avatar avatarId={m.profiles.avatar_id} username={m.profiles.username} size={34} className="ring-1 ring-border flex-shrink-0" />
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-1.5">
                   {roleIcon(m.role)}
-                  <Link href={`/profile/${m.profiles.username}`} className="text-sm font-medium hover:text-accent transition">
-                    @{m.profiles.username}
-                  </Link>
+                  <span className="text-sm font-medium">@{m.profiles.username}</span>
                 </div>
                 <p className="text-xs text-muted">{new Date(m.joined_at).toLocaleDateString('tr-TR')} katıldı</p>
               </div>
-            </div>
+            </button>
           ))}
         </div>
+      )}
+
+      {selectedMember && (
+        <MemberProfileModal
+          username={selectedMember.profiles.username}
+          avatarId={selectedMember.profiles.avatar_id}
+          role={selectedMember.role}
+          joinedAt={selectedMember.joined_at}
+          onClose={() => setSelectedMember(null)}
+        />
       )}
 
       <ArchiveWidget
