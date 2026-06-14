@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect, useRef } from 'react'
+import { Send } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import WallPost from './WallPost'
 import type { Profile } from '@/types/database'
@@ -89,14 +90,19 @@ export default function Wall({ groupId, currentProfile }: Props) {
   }
 
   return (
-    <div className="bg-surface border border-base rounded-2xl flex flex-col" style={{ height: '500px' }}>
-      <div className="p-4 border-b border-base">
-        <h3 className="font-semibold text-sm">Duvar <span className="text-muted font-normal">(son 48 saat)</span></h3>
+    <div className="bg-surface border border-base rounded-2xl flex flex-col overflow-hidden" style={{ height: '520px' }}>
+      {/* Header */}
+      <div className="px-5 py-3.5 border-b border-base flex items-center justify-between">
+        <p className="text-sm font-semibold">Duvar</p>
+        <p className="text-xs text-muted">Son 48 saat</p>
       </div>
 
-      <div className="flex-1 overflow-y-auto p-4 space-y-4">
+      {/* Messages */}
+      <div className="flex-1 overflow-y-auto px-5 py-4 space-y-5">
         {posts.length === 0 && (
-          <p className="text-center text-muted text-sm py-8">Henüz yazı yok. İlk yazan sen ol!</p>
+          <div className="h-full flex items-center justify-center">
+            <p className="text-muted text-sm">Henüz yazı yok. İlk yazan sen ol.</p>
+          </div>
         )}
         {posts.map(post => (
           <WallPost
@@ -109,22 +115,29 @@ export default function Wall({ groupId, currentProfile }: Props) {
         <div ref={bottomRef} />
       </div>
 
-      <form onSubmit={handlePost} className="p-4 border-t border-base flex gap-3">
+      {/* Input */}
+      <form onSubmit={handlePost} className="px-4 py-3 border-t border-base flex items-end gap-3">
         <textarea
           value={content}
           onChange={e => setContent(e.target.value)}
           onKeyDown={e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); handlePost(e) } }}
-          placeholder="Bir şeyler yaz... (Enter ile gönder)"
+          placeholder="Bir şeyler yaz..."
           maxLength={500}
           rows={1}
-          className="flex-1 bg-surface2 border border-base rounded-xl px-4 py-2.5 text-sm resize-none focus:ring-2 ring-accent transition"
+          className="flex-1 bg-surface2 border border-base rounded-xl px-4 py-2.5 text-sm resize-none focus:ring-1 ring-accent transition"
+          style={{ maxHeight: '100px' }}
+          onInput={e => {
+            const t = e.currentTarget
+            t.style.height = 'auto'
+            t.style.height = t.scrollHeight + 'px'
+          }}
         />
         <button
           type="submit"
           disabled={submitting || !content.trim()}
-          className="accent rounded-xl px-4 text-sm font-semibold hover:opacity-90 disabled:opacity-40 transition"
+          className="accent w-9 h-9 flex items-center justify-center rounded-xl hover:opacity-90 disabled:opacity-40 transition flex-shrink-0"
         >
-          Gönder
+          <Send className="w-4 h-4" />
         </button>
       </form>
     </div>

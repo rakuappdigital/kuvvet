@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
+import { Plus, Users, ChevronRight, Crown, Shield } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import CreateGroupModal from '@/components/groups/CreateGroupModal'
 import type { Profile } from '@/types/database'
@@ -35,58 +36,74 @@ export default function HomeClient({ profile, initialGroups }: Props) {
     }
   }
 
+  const roleIcon = (role: string) => {
+    if (role === 'owner') return <Crown className="w-3 h-3 text-accent" />
+    if (role === 'admin') return <Shield className="w-3 h-3 text-muted" />
+    return null
+  }
+
   return (
-    <div className="space-y-8">
+    <div className="space-y-6">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold">Gruplarım</h1>
+          <h1 className="text-xl font-bold tracking-tight">Gruplar</h1>
           <p className="text-muted text-sm mt-0.5">@{profile.username}</p>
         </div>
         <button
           onClick={() => setShowCreate(true)}
-          className="accent rounded-xl px-4 py-2.5 text-sm font-semibold hover:opacity-90 transition"
+          className="accent rounded-xl px-4 py-2.5 text-sm font-semibold flex items-center gap-1.5 hover:opacity-90 transition glow-accent"
         >
-          + Yeni Grup
+          <Plus className="w-4 h-4" />
+          Yeni grup
         </button>
       </div>
 
-      {/* Groups grid */}
+      {/* Groups */}
       {groups.length === 0 ? (
-        <div className="text-center py-16 bg-surface rounded-2xl border border-base">
-          <div className="text-5xl mb-4">🤝</div>
-          <p className="font-semibold mb-2">Henüz bir grubun yok</p>
-          <p className="text-muted text-sm mb-6">Bir grup oluştur ya da davet bağlantısıyla katıl.</p>
+        <div className="bg-surface border border-base rounded-2xl p-12 text-center space-y-4">
+          <div className="w-12 h-12 rounded-2xl bg-surface2 border border-base flex items-center justify-center mx-auto">
+            <Users className="w-5 h-5 text-muted" />
+          </div>
+          <div>
+            <p className="font-semibold text-sm">Henüz bir grubun yok</p>
+            <p className="text-muted text-sm mt-1">Bir grup oluştur ya da davet bağlantısıyla katıl.</p>
+          </div>
           <button
             onClick={() => setShowCreate(true)}
-            className="accent rounded-xl px-6 py-3 text-sm font-semibold hover:opacity-90 transition"
+            className="accent rounded-xl px-5 py-2.5 text-sm font-semibold hover:opacity-90 transition inline-flex items-center gap-1.5 glow-accent"
           >
-            Grup Oluştur
+            <Plus className="w-4 h-4" />
+            Grup oluştur
           </button>
         </div>
       ) : (
-        <div className="grid gap-4 sm:grid-cols-2">
+        <div className="space-y-2">
           {groups.map(group => (
             <Link
               key={group.id}
               href={`/groups/${group.id}`}
-              className="bg-surface border border-base rounded-2xl p-5 hover:border-accent transition-colors group"
+              className="flex items-center gap-4 bg-surface border border-base rounded-2xl px-5 py-4 hover:border-accent/40 hover:bg-surface2 transition-all group"
             >
-              <div className="flex items-start justify-between mb-2">
-                <h2 className="font-bold text-base group-hover:text-accent transition-colors">{group.name}</h2>
-                {group.myRole === 'owner' && (
-                  <span className="text-xs bg-surface2 text-muted px-2 py-0.5 rounded-full">Sahibi</span>
-                )}
-                {group.myRole === 'admin' && (
-                  <span className="text-xs bg-surface2 text-muted px-2 py-0.5 rounded-full">Admin</span>
+              {/* Icon */}
+              <div className="w-10 h-10 rounded-xl bg-surface2 border border-base flex items-center justify-center flex-shrink-0 group-hover:border-accent/30 transition">
+                <Users className="w-4 h-4 text-muted group-hover:text-accent transition" />
+              </div>
+
+              {/* Info */}
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-1.5">
+                  {roleIcon(group.myRole)}
+                  <span className="font-semibold text-sm truncate">{group.name}</span>
+                </div>
+                {group.description ? (
+                  <p className="text-muted text-xs mt-0.5 truncate">{group.description}</p>
+                ) : (
+                  <p className="text-muted text-xs mt-0.5">{new Date(group.created_at).toLocaleDateString('tr-TR')} kuruldu</p>
                 )}
               </div>
-              {group.description && (
-                <p className="text-sm text-muted line-clamp-2">{group.description}</p>
-              )}
-              <p className="text-xs text-muted mt-3">
-                {new Date(group.created_at).toLocaleDateString('tr-TR')} tarihinde kuruldu
-              </p>
+
+              <ChevronRight className="w-4 h-4 text-muted group-hover:text-accent group-hover:translate-x-0.5 transition-all flex-shrink-0" />
             </Link>
           ))}
         </div>

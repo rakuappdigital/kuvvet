@@ -4,30 +4,42 @@
 
 @layer base {
   :root {
-    --bg: 240 10% 6%;
-    --surface: 240 8% 10%;
-    --surface2: 240 6% 14%;
-    --border: 240 6% 18%;
-    --accent: 258 80% 65%;
-    --accent-fg: 0 0% 100%;
-    --text: 240 10% 95%;
-    --text-muted: 240 6% 55%;
+    /* Warm dark — koyu ama soğuk değil */
+    --bg:       30 10% 5%;
+    --surface:  30 8% 9%;
+    --surface2: 30 6% 13%;
+    --border:   30 8% 17%;
+
+    /* Amber-gold aksan */
+    --accent:    38 95% 48%;
+    --accent-fg: 30 10% 5%;
+
+    /* Metin */
+    --text:      30 15% 94%;
+    --text-muted: 30 8% 50%;
   }
 
-  * {
-    border-color: hsl(var(--border));
-  }
+  * { border-color: hsl(var(--border)); box-sizing: border-box; }
 
   body {
     background: hsl(var(--bg));
     color: hsl(var(--text));
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', sans-serif;
     -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
-  input, textarea {
-    outline: none;
+  input, textarea, select { outline: none; color: inherit; }
+
+  ::selection {
+    background: hsl(var(--accent) / 0.3);
   }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 4px; height: 4px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: hsl(var(--border)); border-radius: 99px; }
+  ::-webkit-scrollbar-thumb:hover { background: hsl(var(--text-muted)); }
 }
 
 @layer components {
@@ -35,14 +47,27 @@
     background: hsl(var(--accent));
     color: hsl(var(--accent-fg));
   }
+
+  /* Cam yüzey efekti — premium hissi */
+  .glass {
+    background: hsl(var(--surface) / 0.85);
+    backdrop-filter: blur(12px) saturate(1.4);
+    -webkit-backdrop-filter: blur(12px) saturate(1.4);
+    border: 1px solid hsl(var(--border));
+  }
 }
 
 @layer utilities {
-  .bg-surface { background: hsl(var(--surface)); }
-  .bg-surface2 { background: hsl(var(--surface2)); }
-  .text-muted { color: hsl(var(--text-muted)); }
-  .border-base { border-color: hsl(var(--border)); }
-  .text-accent { color: hsl(var(--accent)); }
+  .bg-surface   { background: hsl(var(--surface)); }
+  .bg-surface2  { background: hsl(var(--surface2)); }
+  .text-muted   { color: hsl(var(--text-muted)); }
+  .border-base  { border-color: hsl(var(--border)); }
+  .text-accent  { color: hsl(var(--accent)); }
+  .ring-accent  { --tw-ring-color: hsl(var(--accent)); }
   .divide-base > * + * { border-color: hsl(var(--border)); }
-  .ring-accent { --tw-ring-color: hsl(var(--accent)); }
+
+  /* Glow — vurgu elementlerinde */
+  .glow-accent {
+    box-shadow: 0 0 20px hsl(var(--accent) / 0.25), 0 0 60px hsl(var(--accent) / 0.08);
+  }
 }

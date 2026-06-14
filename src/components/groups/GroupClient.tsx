@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
+import { ArrowLeft, UserPlus, MessageSquare, BarChart2, Users, Plus, Crown, Shield } from 'lucide-react'
 import Wall from '@/components/wall/Wall'
 import PollCard from '@/components/polls/PollCard'
 import CreatePollModal from '@/components/polls/CreatePollModal'
@@ -43,36 +44,56 @@ export default function GroupClient({ group, currentProfile, myRole: _myRole, in
     if (data) setPolls(data as any)
   }
 
+  const tabs: { key: Tab; label: string; icon: React.ReactNode }[] = [
+    { key: 'wall', label: 'Duvar', icon: <MessageSquare className="w-3.5 h-3.5" /> },
+    { key: 'polls', label: 'Anketler', icon: <BarChart2 className="w-3.5 h-3.5" /> },
+    { key: 'members', label: 'Üyeler', icon: <Users className="w-3.5 h-3.5" /> },
+  ]
+
+  const roleIcon = (role: string) => {
+    if (role === 'owner') return <Crown className="w-3.5 h-3.5 text-accent" />
+    if (role === 'admin') return <Shield className="w-3.5 h-3.5 text-muted" />
+    return null
+  }
+
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex items-start justify-between gap-4">
-        <div>
-          <Link href="/" className="text-sm text-muted hover:text-accent transition">← Gruplar</Link>
-          <h1 className="text-2xl font-bold mt-1">{group.name}</h1>
-          {group.description && <p className="text-muted text-sm mt-1">{group.description}</p>}
+      <div className="space-y-4">
+        <Link href="/" className="inline-flex items-center gap-1.5 text-sm text-muted hover:text-accent transition">
+          <ArrowLeft className="w-3.5 h-3.5" />
+          Gruplar
+        </Link>
+
+        <div className="flex items-start justify-between gap-4">
+          <div>
+            <h1 className="text-xl font-bold tracking-tight">{group.name}</h1>
+            {group.description && <p className="text-muted text-sm mt-1">{group.description}</p>}
+          </div>
+          <Button size="sm" onClick={() => setShowInvite(true)}>
+            <UserPlus className="w-3.5 h-3.5" />
+            Davet et
+          </Button>
         </div>
-        <Button size="sm" onClick={() => setShowInvite(true)}>
-          Davet Et
-        </Button>
       </div>
 
       {/* Tabs */}
       <div className="flex gap-1 bg-surface p-1 rounded-xl border border-base w-fit">
-        {(['wall', 'polls', 'members'] as Tab[]).map(t => (
+        {tabs.map(t => (
           <button
-            key={t}
-            onClick={() => setTab(t)}
-            className={`px-4 py-2 text-sm font-medium rounded-lg transition ${
-              tab === t ? 'accent' : 'text-muted hover:text-accent'
+            key={t.key}
+            onClick={() => setTab(t.key)}
+            className={`flex items-center gap-1.5 px-4 py-2 text-xs font-semibold rounded-lg transition ${
+              tab === t.key ? 'accent' : 'text-muted hover:text-accent'
             }`}
           >
-            {t === 'wall' ? 'Duvar' : t === 'polls' ? 'Anketler' : 'Üyeler'}
+            {t.icon}
+            {t.label}
           </button>
         ))}
       </div>
 
-      {/* Tab content */}
+      {/* Content */}
       {tab === 'wall' && (
         <Wall groupId={group.id} currentProfile={currentProfile} />
       )}
@@ -80,15 +101,21 @@ export default function GroupClient({ group, currentProfile, myRole: _myRole, in
       {tab === 'polls' && (
         <div className="space-y-4">
           <div className="flex items-center justify-between">
-            <h2 className="font-semibold">Anketler</h2>
-            <Button size="sm" onClick={() => setShowCreatePoll(true)}>+ Anket Ekle</Button>
+            <h2 className="text-sm font-semibold">Anketler</h2>
+            <Button size="sm" onClick={() => setShowCreatePoll(true)}>
+              <Plus className="w-3.5 h-3.5" />
+              Anket ekle
+            </Button>
           </div>
           {polls.length === 0 ? (
-            <div className="text-center py-12 bg-surface rounded-2xl border border-base">
+            <div className="bg-surface border border-base rounded-2xl p-10 text-center space-y-3">
+              <div className="w-10 h-10 bg-surface2 border border-base rounded-xl flex items-center justify-center mx-auto">
+                <BarChart2 className="w-4 h-4 text-muted" />
+              </div>
               <p className="text-muted text-sm">Henüz anket yok.</p>
             </div>
           ) : (
-            <div className="space-y-4">
+            <div className="space-y-3">
               {polls.map(poll => (
                 <PollCard key={poll.id} poll={poll} currentProfile={currentProfile} />
               ))}
@@ -98,17 +125,17 @@ export default function GroupClient({ group, currentProfile, myRole: _myRole, in
       )}
 
       {tab === 'members' && (
-        <div className="bg-surface border border-base rounded-2xl divide-y divide-base">
-          {initialMembers.map(m => (
-            <div key={m.profiles.id} className="flex items-center gap-3 p-4">
-              <Avatar avatarId={m.profiles.avatar_id} username={m.profiles.username} size={36} />
-              <div className="flex-1">
-                <p className="text-sm font-medium">@{m.profiles.username}</p>
+        <div className="bg-surface border border-base rounded-2xl overflow-hidden">
+          {initialMembers.map((m, i) => (
+            <div key={m.profiles.id} className={`flex items-center gap-3 px-5 py-3.5 ${i > 0 ? 'border-t border-base' : ''}`}>
+              <Avatar avatarId={m.profiles.avatar_id} username={m.profiles.username} size={34} className="ring-1 ring-border" />
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-1.5">
+                  {roleIcon(m.role)}
+                  <span className="text-sm font-medium">@{m.profiles.username}</span>
+                </div>
                 <p className="text-xs text-muted">{new Date(m.joined_at).toLocaleDateString('tr-TR')} katıldı</p>
               </div>
-              {m.role !== 'member' && (
-                <span className="text-xs bg-surface2 text-muted px-2 py-0.5 rounded-full capitalize">{m.role === 'owner' ? 'Sahibi' : 'Admin'}</span>
-              )}
             </div>
           ))}
         </div>

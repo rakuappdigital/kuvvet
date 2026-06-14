@@ -2,8 +2,9 @@ import type { Metadata } from 'next'
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: 'Kuvvet',
-  description: 'Arkadaş grupları için paylaşım platformu',
+  title: 'nabiyonlan',
+  description: 'Arkadaşlarınla paylaş, oyla, keşfet.',
+  icons: { icon: '/logo.svg' },
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

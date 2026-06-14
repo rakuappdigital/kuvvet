@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { X, Plus, Loader2, Trash2 } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import Button from '@/components/ui/Button'
 
@@ -61,76 +62,91 @@ export default function CreatePollModal({ groupId, userId, onCreated, onClose }:
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
-      <div className="bg-surface border border-base rounded-2xl p-6 w-full max-w-md max-h-[90vh] overflow-y-auto">
-        <div className="flex items-center justify-between mb-6">
-          <h2 className="text-lg font-bold">Yeni Anket</h2>
-          <button onClick={onClose} className="text-muted hover:text-accent text-xl">×</button>
+    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-4 bg-black/70 backdrop-blur-sm">
+      <div className="bg-surface border border-base rounded-2xl w-full max-w-md max-h-[90vh] overflow-y-auto">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-base sticky top-0 bg-surface z-10">
+          <h2 className="font-semibold text-sm">Yeni anket</h2>
+          <button onClick={onClose} className="w-7 h-7 flex items-center justify-center rounded-lg hover:bg-surface2 text-muted hover:text-accent transition">
+            <X className="w-4 h-4" />
+          </button>
         </div>
 
-        <form onSubmit={handleCreate} className="space-y-4">
-          <div>
-            <label className="block text-sm text-muted mb-1">Soru</label>
+        <form onSubmit={handleCreate} className="p-6 space-y-5">
+          {/* Question */}
+          <div className="space-y-1.5">
+            <label className="block text-xs font-medium text-muted uppercase tracking-widest">Soru</label>
             <input
               value={question}
               onChange={e => setQuestion(e.target.value)}
               placeholder="Bu hafta nereye gidelim?"
               maxLength={200}
               required
-              className="w-full bg-surface2 border border-base rounded-xl px-4 py-3 text-sm focus:ring-2 ring-accent transition"
+              className="w-full bg-surface2 border border-base rounded-xl px-4 py-3 text-sm focus:ring-1 ring-accent transition"
             />
           </div>
 
-          <div>
-            <label className="block text-sm text-muted mb-2">Seçenekler</label>
-            <div className="space-y-2">
-              {options.map((opt, i) => (
-                <div key={i} className="flex gap-2">
-                  <input
-                    value={opt}
-                    onChange={e => updateOption(i, e.target.value)}
-                    placeholder={`Seçenek ${i + 1}`}
-                    maxLength={100}
-                    className="flex-1 bg-surface2 border border-base rounded-xl px-4 py-2.5 text-sm focus:ring-2 ring-accent transition"
-                  />
-                  {options.length > 2 && (
-                    <button type="button" onClick={() => removeOption(i)} className="text-muted hover:text-red-400 px-2 text-lg">×</button>
-                  )}
-                </div>
-              ))}
-            </div>
+          {/* Options */}
+          <div className="space-y-2">
+            <label className="block text-xs font-medium text-muted uppercase tracking-widest">Seçenekler</label>
+            {options.map((opt, i) => (
+              <div key={i} className="flex gap-2">
+                <input
+                  value={opt}
+                  onChange={e => updateOption(i, e.target.value)}
+                  placeholder={`Seçenek ${i + 1}`}
+                  maxLength={100}
+                  className="flex-1 bg-surface2 border border-base rounded-xl px-4 py-2.5 text-sm focus:ring-1 ring-accent transition"
+                />
+                {options.length > 2 && (
+                  <button
+                    type="button"
+                    onClick={() => removeOption(i)}
+                    className="w-9 h-9 flex items-center justify-center rounded-xl border border-base hover:bg-surface2 text-muted hover:text-red-400 transition"
+                  >
+                    <Trash2 className="w-3.5 h-3.5" />
+                  </button>
+                )}
+              </div>
+            ))}
             {options.length < 6 && (
-              <button type="button" onClick={addOption} className="mt-2 text-sm text-accent hover:opacity-80">
-                + Seçenek ekle
+              <button
+                type="button"
+                onClick={addOption}
+                className="flex items-center gap-1.5 text-xs text-muted hover:text-accent transition mt-1"
+              >
+                <Plus className="w-3.5 h-3.5" />
+                Seçenek ekle
               </button>
             )}
           </div>
 
-          <div className="flex items-center gap-3">
-            <input
-              type="checkbox"
-              id="multi"
-              checked={allowMultiple}
-              onChange={e => setAllowMultiple(e.target.checked)}
-              className="accent-purple-500"
-            />
-            <label htmlFor="multi" className="text-sm">Birden fazla seçim yapılabilsin</label>
+          {/* Settings */}
+          <div className="bg-surface2 rounded-xl border border-base p-4 space-y-3">
+            <label className="flex items-center gap-3 cursor-pointer">
+              <div
+                onClick={() => setAllowMultiple(v => !v)}
+                className={`w-9 h-5 rounded-full transition-all relative ${allowMultiple ? 'bg-accent' : 'bg-border'}`}
+              >
+                <div className={`absolute top-0.5 w-4 h-4 rounded-full bg-white transition-all ${allowMultiple ? 'left-4' : 'left-0.5'}`} />
+              </div>
+              <span className="text-sm">Birden fazla seçim</span>
+            </label>
+
+            <div className="space-y-1.5">
+              <label className="block text-xs text-muted">Bitiş tarihi <span className="opacity-60">(isteğe bağlı)</span></label>
+              <input
+                type="datetime-local"
+                value={endsAt}
+                onChange={e => setEndsAt(e.target.value)}
+                className="w-full bg-surface border border-base rounded-xl px-4 py-2.5 text-sm focus:ring-1 ring-accent transition"
+              />
+            </div>
           </div>
 
-          <div>
-            <label className="block text-sm text-muted mb-1">Bitiş tarihi <span className="text-xs">(isteğe bağlı)</span></label>
-            <input
-              type="datetime-local"
-              value={endsAt}
-              onChange={e => setEndsAt(e.target.value)}
-              className="w-full bg-surface2 border border-base rounded-xl px-4 py-3 text-sm focus:ring-2 ring-accent transition"
-            />
-          </div>
-
-          <div className="flex gap-3 pt-2">
+          <div className="flex gap-2">
             <Button variant="outline" type="button" onClick={onClose} className="flex-1">İptal</Button>
             <Button type="submit" disabled={loading || !question.trim()} className="flex-1">
-              {loading ? 'Oluşturuluyor...' : 'Oluştur'}
+              {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Oluştur'}
             </Button>
           </div>
         </form>

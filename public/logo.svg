@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48" height="48" fill="none">
+  <!-- Speech bubble -->
+  <rect x="4" y="4" width="36" height="28" rx="10" fill="#F0A500"/>
+  <!-- Tail -->
+  <path d="M14 32 L10 42 L22 34" fill="#F0A500"/>
+  <!-- Letter n -->
+  <path d="M13 24V14h3v3.5c.8-2.2 2.4-3.8 4.8-3.8 2.8 0 4.2 1.8 4.2 5V24h-3v-4.8c0-1.8-.7-2.8-2.1-2.8-1.6 0-3.9 1.4-3.9 4.2V24h-3z" fill="#0A0907"/>
+</svg>
