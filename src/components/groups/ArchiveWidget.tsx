@@ -20,9 +20,12 @@ interface Props {
   expiredPolls: (Poll & { poll_options: PollOption[] })[]
   pastActivities: ActivityWithProfile[]
   currentProfile: Profile
+  canManage: boolean
+  onPollDeleted: (id: string) => void
+  onActivityDeleted: (id: string) => void
 }
 
-export default function ArchiveWidget({ expiredPolls, pastActivities, currentProfile }: Props) {
+export default function ArchiveWidget({ expiredPolls, pastActivities, currentProfile, canManage, onPollDeleted, onActivityDeleted }: Props) {
   const [open, setOpen] = useState(false)
   const count = expiredPolls.length + pastActivities.length
   if (count === 0) return null
@@ -70,7 +73,13 @@ export default function ArchiveWidget({ expiredPolls, pastActivities, currentPro
                     <span className="text-xs text-muted">({expiredPolls.length})</span>
                   </div>
                   {expiredPolls.map(poll => (
-                    <PollCard key={poll.id} poll={poll} currentProfile={currentProfile} />
+                    <PollCard
+                      key={poll.id}
+                      poll={poll}
+                      currentProfile={currentProfile}
+                      canDelete={poll.created_by === currentProfile.id || canManage}
+                      onDeleted={onPollDeleted}
+                    />
                   ))}
                 </div>
               )}
@@ -87,8 +96,8 @@ export default function ArchiveWidget({ expiredPolls, pastActivities, currentPro
                       key={a.id}
                       activity={a}
                       currentProfile={currentProfile}
-                      canDelete={false}
-                      onDeleted={() => {}}
+                      canDelete={a.created_by === currentProfile.id || canManage}
+                      onDeleted={onActivityDeleted}
                     />
                   ))}
                 </div>

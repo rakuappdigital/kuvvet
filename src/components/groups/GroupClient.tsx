@@ -261,6 +261,9 @@ export default function GroupClient({ group, currentProfile, myRole: _myRole, in
         expiredPolls={expiredPolls}
         pastActivities={pastActivities as any}
         currentProfile={currentProfile}
+        canManage={canManage}
+        onPollDeleted={id => setPolls(prev => prev.filter(x => x.id !== id))}
+        onActivityDeleted={id => setActivities(prev => prev.filter(x => x.id !== id))}
       />
 
       {showInvite && <InviteModal group={groupData} onClose={() => setShowInvite(false)} />}
