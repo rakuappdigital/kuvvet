@@ -2,11 +2,14 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
-import { ArrowLeft, UserPlus, MessageSquare, BarChart2, Users, Plus, Crown, Shield } from 'lucide-react'
+import { ArrowLeft, UserPlus, MessageSquare, BarChart2, Users, Plus, Crown, Shield, Settings } from 'lucide-react'
+import Image from 'next/image'
+import { getGroupAvatarUrl } from '@/lib/utils'
 import Wall from '@/components/wall/Wall'
 import PollCard from '@/components/polls/PollCard'
 import CreatePollModal from '@/components/polls/CreatePollModal'
 import InviteModal from '@/components/groups/InviteModal'
+import GroupSettingsModal from '@/components/groups/GroupSettingsModal'
 import Avatar from '@/components/ui/Avatar'
 import Button from '@/components/ui/Button'
 import { createClient } from '@/lib/supabase/client'
@@ -33,6 +36,9 @@ export default function GroupClient({ group, currentProfile, myRole: _myRole, in
   const [polls, setPolls] = useState(initialPolls)
   const [showInvite, setShowInvite] = useState(false)
   const [showCreatePoll, setShowCreatePoll] = useState(false)
+  const [showSettings, setShowSettings] = useState(false)
+  const [groupData, setGroupData] = useState(group)
+  const canManage = _myRole === 'owner' || _myRole === 'admin'
   const supabase = createClient()
 
   async function refreshPolls() {
@@ -66,14 +72,29 @@ export default function GroupClient({ group, currentProfile, myRole: _myRole, in
         </Link>
 
         <div className="flex items-start justify-between gap-4">
-          <div>
-            <h1 className="text-xl font-bold tracking-tight">{group.name}</h1>
-            {group.description && <p className="text-muted text-sm mt-1">{group.description}</p>}
+          <div className="flex items-center gap-3">
+            <div className="w-12 h-12 rounded-xl overflow-hidden border border-base flex-shrink-0">
+              <Image src={getGroupAvatarUrl(groupData.avatar_id || 1)} alt={groupData.name} width={48} height={48} className="w-full h-full" />
+            </div>
+            <div>
+              <h1 className="text-xl font-bold tracking-tight">{groupData.name}</h1>
+              {groupData.description && <p className="text-muted text-sm mt-0.5">{groupData.description}</p>}
+            </div>
           </div>
-          <Button size="sm" onClick={() => setShowInvite(true)}>
-            <UserPlus className="w-3.5 h-3.5" />
-            Davet et
-          </Button>
+          <div className="flex items-center gap-2">
+            {canManage && (
+              <button
+                onClick={() => setShowSettings(true)}
+                className="w-8 h-8 flex items-center justify-center rounded-xl border border-base hover:bg-surface2 hover:border-accent/40 text-muted hover:text-accent transition"
+              >
+                <Settings className="w-4 h-4" />
+              </button>
+            )}
+            <Button size="sm" onClick={() => setShowInvite(true)}>
+              <UserPlus className="w-3.5 h-3.5" />
+              Davet et
+            </Button>
+          </div>
         </div>
       </div>
 
@@ -141,7 +162,14 @@ export default function GroupClient({ group, currentProfile, myRole: _myRole, in
         </div>
       )}
 
-      {showInvite && <InviteModal group={group} onClose={() => setShowInvite(false)} />}
+      {showInvite && <InviteModal group={groupData} onClose={() => setShowInvite(false)} />}
+      {showSettings && (
+        <GroupSettingsModal
+          group={groupData}
+          onClose={() => setShowSettings(false)}
+          onUpdated={(updated) => setGroupData(prev => ({ ...prev, ...updated }))}
+        />
+      )}
       {showCreatePoll && (
         <CreatePollModal
           groupId={group.id}

@@ -2,9 +2,11 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
-import { Plus, Users, ChevronRight, Crown, Shield } from 'lucide-react'
+import { Plus, ChevronRight, Crown, Shield, Users } from 'lucide-react'
+import Image from 'next/image'
 import { createClient } from '@/lib/supabase/client'
 import CreateGroupModal from '@/components/groups/CreateGroupModal'
+import { getGroupAvatarUrl } from '@/lib/utils'
 import type { Profile } from '@/types/database'
 
 interface GroupItem {
@@ -12,6 +14,7 @@ interface GroupItem {
   name: string
   description: string | null
   invite_code: string
+  avatar_id: number
   created_at: string
   myRole: string
 }
@@ -85,9 +88,9 @@ export default function HomeClient({ profile, initialGroups }: Props) {
               href={`/groups/${group.id}`}
               className="flex items-center gap-4 bg-surface border border-base rounded-2xl px-5 py-4 hover:border-accent/40 hover:bg-surface2 transition-all group"
             >
-              {/* Icon */}
-              <div className="w-10 h-10 rounded-xl bg-surface2 border border-base flex items-center justify-center flex-shrink-0 group-hover:border-accent/30 transition">
-                <Users className="w-4 h-4 text-muted group-hover:text-accent transition" />
+              {/* Avatar */}
+              <div className="w-10 h-10 rounded-xl overflow-hidden flex-shrink-0 border border-base">
+                <Image src={getGroupAvatarUrl(group.avatar_id || 1)} alt={group.name} width={40} height={40} className="w-full h-full" />
               </div>
 
               {/* Info */}

@@ -15,6 +15,7 @@ export interface Group {
   description: string | null
   created_by: string | null
   invite_code: string
+  avatar_id: number
   created_at: string
 }
 

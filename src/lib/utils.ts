@@ -8,6 +8,10 @@ export function getAvatarUrl(avatarId: number): string {
   return `/avatars/avatar-${avatarId}.svg`
 }
 
+export function getGroupAvatarUrl(avatarId: number): string {
+  return `/group-avatars/group-${avatarId}.svg`
+}
+
 export function formatRelativeTime(dateStr: string): string {
   const date = new Date(dateStr)
   const now = new Date()
