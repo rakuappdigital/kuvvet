@@ -6,6 +6,8 @@ export interface Profile {
   id: string
   username: string
   avatar_id: number
+  bio: string | null
+  status: string | null
   created_at: string
 }
 

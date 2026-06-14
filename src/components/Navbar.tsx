@@ -30,8 +30,10 @@ export default function Navbar({ profile }: Props) {
         </Link>
 
         <div className="flex items-center gap-3">
-          <span className="text-sm text-muted hidden sm:block">@{profile.username}</span>
-          <Avatar avatarId={profile.avatar_id} username={profile.username} size={30} className="ring-1 ring-border" />
+          <Link href={`/profile/${profile.username}`} className="flex items-center gap-2 hover:opacity-80 transition">
+            <span className="text-sm text-muted hidden sm:block">@{profile.username}</span>
+            <Avatar avatarId={profile.avatar_id} username={profile.username} size={30} className="ring-1 ring-border" />
+          </Link>
           <button
             onClick={handleLogout}
             className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-surface2 text-muted hover:text-accent transition"

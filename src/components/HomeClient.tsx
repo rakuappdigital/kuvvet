@@ -2,10 +2,11 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
-import { Plus, ChevronRight, Crown, Shield, Users } from 'lucide-react'
+import { Plus, ChevronRight, Crown, Shield, Users, LogIn } from 'lucide-react'
 import Image from 'next/image'
 import { createClient } from '@/lib/supabase/client'
 import CreateGroupModal from '@/components/groups/CreateGroupModal'
+import JoinGroupModal from '@/components/groups/JoinGroupModal'
 import { getGroupAvatarUrl } from '@/lib/utils'
 import type { Profile } from '@/types/database'
 
@@ -27,12 +28,13 @@ interface Props {
 export default function HomeClient({ profile, initialGroups }: Props) {
   const [groups, setGroups] = useState(initialGroups)
   const [showCreate, setShowCreate] = useState(false)
+  const [showJoin, setShowJoin] = useState(false)
   const supabase = createClient()
 
   async function refreshGroups() {
     const { data: memberRows } = await supabase
       .from('group_members')
-      .select('group_id, role, groups(id, name, description, invite_code, created_at)')
+      .select('group_id, role, groups(id, name, description, invite_code, avatar_id, created_at)')
       .eq('user_id', profile.id)
     if (memberRows) {
       setGroups(memberRows.map(r => ({ ...(r.groups as any), myRole: r.role })))
@@ -53,13 +55,22 @@ export default function HomeClient({ profile, initialGroups }: Props) {
           <h1 className="text-xl font-bold tracking-tight">Gruplar</h1>
           <p className="text-muted text-sm mt-0.5">@{profile.username}</p>
         </div>
-        <button
-          onClick={() => setShowCreate(true)}
-          className="accent rounded-xl px-4 py-2.5 text-sm font-semibold flex items-center gap-1.5 hover:opacity-90 transition glow-accent"
-        >
-          <Plus className="w-4 h-4" />
-          Yeni grup
-        </button>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={() => setShowJoin(true)}
+            className="border border-base rounded-xl px-4 py-2.5 text-sm font-semibold flex items-center gap-1.5 hover:bg-surface2 hover:border-accent/40 text-muted hover:text-accent transition"
+          >
+            <LogIn className="w-4 h-4" />
+            Katıl
+          </button>
+          <button
+            onClick={() => setShowCreate(true)}
+            className="accent rounded-xl px-4 py-2.5 text-sm font-semibold flex items-center gap-1.5 hover:opacity-90 transition glow-accent"
+          >
+            <Plus className="w-4 h-4" />
+            Yeni grup
+          </button>
+        </div>
       </div>
 
       {/* Groups */}
@@ -70,15 +81,24 @@ export default function HomeClient({ profile, initialGroups }: Props) {
           </div>
           <div>
             <p className="font-semibold text-sm">Henüz bir grubun yok</p>
-            <p className="text-muted text-sm mt-1">Bir grup oluştur ya da davet bağlantısıyla katıl.</p>
+            <p className="text-muted text-sm mt-1">Yeni bir grup kur ya da davet koduyla katıl.</p>
           </div>
-          <button
-            onClick={() => setShowCreate(true)}
-            className="accent rounded-xl px-5 py-2.5 text-sm font-semibold hover:opacity-90 transition inline-flex items-center gap-1.5 glow-accent"
-          >
-            <Plus className="w-4 h-4" />
-            Grup oluştur
-          </button>
+          <div className="flex items-center justify-center gap-2">
+            <button
+              onClick={() => setShowJoin(true)}
+              className="border border-base rounded-xl px-4 py-2.5 text-sm font-semibold flex items-center gap-1.5 hover:bg-surface2 hover:border-accent/40 text-muted hover:text-accent transition"
+            >
+              <LogIn className="w-4 h-4" />
+              Kod ile katıl
+            </button>
+            <button
+              onClick={() => setShowCreate(true)}
+              className="accent rounded-xl px-5 py-2.5 text-sm font-semibold hover:opacity-90 transition inline-flex items-center gap-1.5 glow-accent"
+            >
+              <Plus className="w-4 h-4" />
+              Grup oluştur
+            </button>
+          </div>
         </div>
       ) : (
         <div className="space-y-2">
@@ -88,12 +108,9 @@ export default function HomeClient({ profile, initialGroups }: Props) {
               href={`/groups/${group.id}`}
               className="flex items-center gap-4 bg-surface border border-base rounded-2xl px-5 py-4 hover:border-accent/40 hover:bg-surface2 transition-all group"
             >
-              {/* Avatar */}
               <div className="w-10 h-10 rounded-xl overflow-hidden flex-shrink-0 border border-base">
                 <Image src={getGroupAvatarUrl(group.avatar_id || 1)} alt={group.name} width={40} height={40} className="w-full h-full" />
               </div>
-
-              {/* Info */}
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-1.5">
                   {roleIcon(group.myRole)}
@@ -105,7 +122,6 @@ export default function HomeClient({ profile, initialGroups }: Props) {
                   <p className="text-muted text-xs mt-0.5">{new Date(group.created_at).toLocaleDateString('tr-TR')} kuruldu</p>
                 )}
               </div>
-
               <ChevronRight className="w-4 h-4 text-muted group-hover:text-accent group-hover:translate-x-0.5 transition-all flex-shrink-0" />
             </Link>
           ))}
@@ -117,6 +133,12 @@ export default function HomeClient({ profile, initialGroups }: Props) {
           userId={profile.id}
           onCreated={refreshGroups}
           onClose={() => setShowCreate(false)}
+        />
+      )}
+      {showJoin && (
+        <JoinGroupModal
+          userId={profile.id}
+          onClose={() => setShowJoin(false)}
         />
       )}
     </div>

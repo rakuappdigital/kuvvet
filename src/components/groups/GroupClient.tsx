@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
-import { ArrowLeft, UserPlus, MessageSquare, BarChart2, Users, Plus, Crown, Shield, Settings } from 'lucide-react'
+import { ArrowLeft, UserPlus, MessageSquare, BarChart2, Users, Plus, Crown, Shield, Settings, LogOut } from 'lucide-react'
 import Image from 'next/image'
 import { getGroupAvatarUrl } from '@/lib/utils'
 import Wall from '@/components/wall/Wall'
@@ -37,9 +37,19 @@ export default function GroupClient({ group, currentProfile, myRole: _myRole, in
   const [showInvite, setShowInvite] = useState(false)
   const [showCreatePoll, setShowCreatePoll] = useState(false)
   const [showSettings, setShowSettings] = useState(false)
+  const [showLeaveConfirm, setShowLeaveConfirm] = useState(false)
   const [groupData, setGroupData] = useState(group)
   const canManage = _myRole === 'owner' || _myRole === 'admin'
+  const canLeave = _myRole === 'member'
   const supabase = createClient()
+
+  async function handleLeave() {
+    await supabase.from('group_members')
+      .delete()
+      .eq('group_id', group.id)
+      .eq('user_id', currentProfile.id)
+    window.location.href = '/'
+  }
 
   async function refreshPolls() {
     const { data } = await supabase
@@ -82,6 +92,22 @@ export default function GroupClient({ group, currentProfile, myRole: _myRole, in
             </div>
           </div>
           <div className="flex items-center gap-2">
+            {canLeave && !showLeaveConfirm && (
+              <button
+                onClick={() => setShowLeaveConfirm(true)}
+                className="w-8 h-8 flex items-center justify-center rounded-xl border border-base hover:bg-red-500/10 hover:border-red-500/30 text-muted hover:text-red-400 transition"
+                title="Gruptan ayrıl"
+              >
+                <LogOut className="w-4 h-4" />
+              </button>
+            )}
+            {canLeave && showLeaveConfirm && (
+              <div className="flex items-center gap-2">
+                <span className="text-xs text-muted">Emin misin?</span>
+                <button onClick={handleLeave} className="text-xs text-red-400 hover:text-red-300 font-semibold">Ayrıl</button>
+                <button onClick={() => setShowLeaveConfirm(false)} className="text-xs text-muted hover:text-accent">İptal</button>
+              </div>
+            )}
             {canManage && (
               <button
                 onClick={() => setShowSettings(true)}
