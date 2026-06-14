@@ -45,11 +45,18 @@ export default function GroupClient({ group, currentProfile, myRole: _myRole, in
   const [polls, setPolls] = useState(initialPolls)
   const [activities, setActivities] = useState(initialActivities)
 
-  const now = new Date().toISOString()
-  const activePolls = polls.filter(p => !p.ends_at || p.ends_at > now)
-  const expiredPolls = polls.filter(p => p.ends_at && p.ends_at <= now)
-  const activeActivities = activities.filter(a => !a.event_at || a.event_at > now)
-  const pastActivities = activities.filter(a => a.event_at && a.event_at <= now)
+  const now = Date.now()
+  const EXPIRY = 24 * 60 * 60 * 1000
+  const activePolls = polls.filter(p => {
+    const exp = p.ends_at ? new Date(p.ends_at).getTime() : new Date(p.created_at).getTime() + EXPIRY
+    return exp > now
+  })
+  const expiredPolls = polls.filter(p => {
+    const exp = p.ends_at ? new Date(p.ends_at).getTime() : new Date(p.created_at).getTime() + EXPIRY
+    return exp <= now
+  })
+  const activeActivities = activities.filter(a => new Date(a.created_at).getTime() + EXPIRY > now)
+  const pastActivities = activities.filter(a => new Date(a.created_at).getTime() + EXPIRY <= now)
   const [showInvite, setShowInvite] = useState(false)
   const [showCreatePoll, setShowCreatePoll] = useState(false)
   const [showCreateActivity, setShowCreateActivity] = useState(false)

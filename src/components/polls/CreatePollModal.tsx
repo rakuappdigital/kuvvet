@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { X, Plus, Loader2, Trash2, Calendar } from 'lucide-react'
+import { X, Plus, Loader2, Trash2 } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import Button from '@/components/ui/Button'
 import type { PollPriority } from '@/types/database'
@@ -23,8 +23,6 @@ export default function CreatePollModal({ groupId, userId, onCreated, onClose }:
   const [question, setQuestion] = useState('')
   const [options, setOptions] = useState(['', ''])
   const [allowMultiple, setAllowMultiple] = useState(false)
-  const [hasEndsAt, setHasEndsAt] = useState(false)
-  const [endsAt, setEndsAt] = useState('')
   const [priority, setPriority] = useState<PollPriority>('normal')
   const [loading, setLoading] = useState(false)
   const supabase = createClient()
@@ -54,7 +52,7 @@ export default function CreatePollModal({ groupId, userId, onCreated, onClose }:
         question: question.trim(),
         allow_multiple: allowMultiple,
         priority,
-        ends_at: hasEndsAt && endsAt ? new Date(endsAt).toISOString() : null,
+        ends_at: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(),
       })
       .select()
       .single()
@@ -145,7 +143,7 @@ export default function CreatePollModal({ groupId, userId, onCreated, onClose }:
           </div>
 
           {/* Ayarlar */}
-          <div className="bg-surface2 rounded-xl border border-base p-4 space-y-3">
+          <div className="bg-surface2 rounded-xl border border-base p-4">
             <label className="flex items-center gap-3 cursor-pointer">
               <div onClick={() => setAllowMultiple(v => !v)}
                 className={`w-9 h-5 rounded-full transition-all relative ${allowMultiple ? 'bg-accent' : 'bg-border'}`}>
@@ -153,26 +151,6 @@ export default function CreatePollModal({ groupId, userId, onCreated, onClose }:
               </div>
               <span className="text-sm">Birden fazla seçim</span>
             </label>
-            <div className="space-y-2">
-              <button
-                type="button"
-                onClick={() => { setHasEndsAt(v => !v); setEndsAt('') }}
-                className={`flex items-center gap-2 text-sm transition ${hasEndsAt ? 'text-accent' : 'text-muted hover:text-accent'}`}
-              >
-                <Calendar className="w-4 h-4" />
-                {hasEndsAt ? 'Bitiş tarihi kaldır' : 'Bitiş tarihi ekle (isteğe bağlı)'}
-              </button>
-              {hasEndsAt && (
-                <input
-                  type="datetime-local"
-                  value={endsAt}
-                  onChange={e => setEndsAt(e.target.value)}
-                  required={hasEndsAt}
-                  className="w-full bg-surface border border-base rounded-xl px-3 py-2 text-sm focus:ring-1 ring-accent transition"
-                  style={{ colorScheme: 'dark' }}
-                />
-              )}
-            </div>
           </div>
 
           <div className="flex gap-2">

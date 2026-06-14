@@ -1,10 +1,10 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Trash2, X, AlertTriangle, Loader2 } from 'lucide-react'
+import { Trash2, X, AlertTriangle, Loader2, Clock } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import Avatar from '@/components/ui/Avatar'
-import { formatRelativeTime } from '@/lib/utils'
+import { formatRelativeTime, getExpiresAt, getTimeLeft } from '@/lib/utils'
 import type { Activity, ActivityResponse, Profile } from '@/types/database'
 
 type ResponseType = 'geliyor' | 'gelmiyor' | 'bilemiyorum'
@@ -30,6 +30,17 @@ interface Props {
   onDeleted: (id: string) => void
 }
 
+function useCountdown(createdAt: string) {
+  const expiresAt = getExpiresAt(createdAt)
+  const [state, setState] = useState(() => getTimeLeft(expiresAt))
+  useEffect(() => {
+    const id = setInterval(() => setState(getTimeLeft(expiresAt)), 30000)
+    return () => clearInterval(id)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+  return state
+}
+
 export default function ActivityCard({ activity, currentProfile, canDelete, onDeleted }: Props) {
   const [responses, setResponses] = useState<ResponseWithProfile[]>([])
   const [submitting, setSubmitting] = useState(false)
@@ -37,6 +48,7 @@ export default function ActivityCard({ activity, currentProfile, canDelete, onDe
   const [deleteConfirm, setDeleteConfirm] = useState(false)
   const [deleting, setDeleting] = useState(false)
   const supabase = createClient()
+  const countdown = useCountdown(activity.created_at)
 
   const myResponse = responses.find(r => r.user_id === currentProfile.id)
 
@@ -93,8 +105,28 @@ export default function ActivityCard({ activity, currentProfile, canDelete, onDe
   return (
     <>
       <div className="bg-surface border border-base rounded-2xl overflow-hidden">
+        {/* Countdown bar */}
+        <div className="relative h-1 bg-surface2">
+          <div
+            className={`h-full transition-all duration-1000 ${
+              countdown.expired ? 'bg-border' :
+              countdown.percent > 50 ? 'bg-green-500' :
+              countdown.percent > 20 ? 'bg-yellow-500' : 'bg-red-500'
+            }`}
+            style={{ width: `${countdown.percent}%` }}
+          />
+        </div>
+        {/* Countdown label */}
+        <div className={`flex items-center gap-1.5 px-5 pt-2.5 pb-0 text-xs font-medium ${
+          countdown.expired ? 'text-muted' :
+          countdown.percent > 50 ? 'text-green-400' :
+          countdown.percent > 20 ? 'text-yellow-400' : 'text-red-400'
+        }`}>
+          <Clock className="w-3 h-3 flex-shrink-0" />
+          <span>{countdown.text}</span>
+        </div>
         {/* Header */}
-        <div className="px-5 py-4 flex items-start gap-3">
+        <div className="px-5 py-3 flex items-start gap-3">
           <Avatar avatarId={activity.profiles.avatar_id} username={activity.profiles.username} size={34} className="ring-1 ring-border flex-shrink-0 mt-0.5" />
           <div className="flex-1 min-w-0">
             <div className="flex items-baseline gap-2 mb-1">
@@ -129,13 +161,16 @@ export default function ActivityCard({ activity, currentProfile, canDelete, onDe
           {RESPONSES.map(r => {
             const count = countFor(r.value)
             const isActive = myResponse?.response === r.value
+            const locked = countdown.expired || submitting
             return (
               <button
                 key={r.value}
-                onClick={() => handleResponse(r.value)}
-                disabled={submitting}
+                onClick={() => !locked && handleResponse(r.value)}
+                disabled={locked}
                 className={`flex flex-col items-center gap-1 py-3 rounded-xl border text-xs font-semibold transition ${
-                  isActive ? r.active : 'border-base text-muted hover:bg-surface2 hover:text-accent hover:border-accent/30'
+                  isActive ? r.active :
+                  locked ? 'border-base text-muted opacity-50 cursor-not-allowed' :
+                  'border-base text-muted hover:bg-surface2 hover:text-accent hover:border-accent/30'
                 }`}
               >
                 <span className="text-base">{r.emoji}</span>

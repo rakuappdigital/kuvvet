@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { X, Loader2, Calendar } from 'lucide-react'
+import { X, Loader2 } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import Button from '@/components/ui/Button'
 
@@ -14,8 +14,6 @@ interface Props {
 
 export default function CreateActivityModal({ groupId, userId, onCreated, onClose }: Props) {
   const [title, setTitle] = useState('')
-  const [hasDate, setHasDate] = useState(false)
-  const [eventAt, setEventAt] = useState('')
   const [loading, setLoading] = useState(false)
   const supabase = createClient()
 
@@ -24,13 +22,10 @@ export default function CreateActivityModal({ groupId, userId, onCreated, onClos
     if (!title.trim()) return
     setLoading(true)
 
-    const event_at = hasDate && eventAt ? new Date(eventAt).toISOString() : null
-
     await supabase.from('activities').insert({
       group_id: groupId,
       created_by: userId,
       title: title.trim(),
-      event_at,
     })
 
     onCreated()
@@ -48,7 +43,7 @@ export default function CreateActivityModal({ groupId, userId, onCreated, onClos
         </div>
 
         <form onSubmit={handleCreate} className="p-6 space-y-4">
-          <p className="text-sm text-muted">Grup üyelerinin katılıp katılmayacaklarını belirtebilecekleri bir aktivite oluştur.</p>
+          <p className="text-sm text-muted">Grup üyeleri 24 saat boyunca katılıp katılmayacaklarını belirtebilir.</p>
 
           <div className="space-y-1.5">
             <label className="block text-xs font-medium text-muted uppercase tracking-widest">Aktivite</label>
@@ -63,29 +58,6 @@ export default function CreateActivityModal({ groupId, userId, onCreated, onClos
               className="w-full bg-surface2 border border-base rounded-xl px-4 py-3 text-sm focus:ring-1 ring-accent transition resize-none"
             />
             <p className="text-xs text-muted text-right">{title.length}/300</p>
-          </div>
-
-          {/* Tarih toggle */}
-          <div className="space-y-3">
-            <button
-              type="button"
-              onClick={() => { setHasDate(v => !v); setEventAt('') }}
-              className={`flex items-center gap-2 text-sm transition ${hasDate ? 'text-accent' : 'text-muted hover:text-accent'}`}
-            >
-              <Calendar className="w-4 h-4" />
-              {hasDate ? 'Tarih & saat kaldır' : 'Tarih & saat ekle (isteğe bağlı)'}
-            </button>
-
-            {hasDate && (
-              <input
-                type="datetime-local"
-                value={eventAt}
-                onChange={e => setEventAt(e.target.value)}
-                required={hasDate}
-                className="w-full bg-surface2 border border-base rounded-xl px-3 py-2.5 text-sm focus:ring-1 ring-accent transition"
-                style={{ colorScheme: 'dark' }}
-              />
-            )}
           </div>
 
           <div className="flex gap-2">

@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import { Clock, Users2, ToggleLeft, Trash2, AlertTriangle, Loader2 } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
-import { formatRelativeTime } from '@/lib/utils'
+import { formatRelativeTime, getExpiresAt, getTimeLeft } from '@/lib/utils'
 import type { Poll, PollOption, PollVote, Profile } from '@/types/database'
 
 const PRIORITY = {
@@ -26,7 +26,15 @@ export default function PollCard({ poll, currentProfile, canDelete, onDeleted }:
   const [deleting, setDeleting] = useState(false)
   const supabase = createClient()
 
-  const isExpired = poll.ends_at ? new Date(poll.ends_at) < new Date() : false
+  const expiresAt = poll.ends_at ? new Date(poll.ends_at) : getExpiresAt(poll.created_at)
+  const [countdown, setCountdown] = useState(() => getTimeLeft(expiresAt))
+  useEffect(() => {
+    const id = setInterval(() => setCountdown(getTimeLeft(expiresAt)), 30000)
+    return () => clearInterval(id)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  const isExpired = countdown.expired
   const myVotes = votes.filter(v => v.user_id === currentProfile.id).map(v => v.option_id)
   const hasVoted = myVotes.length > 0
   const totalVotes = votes.length
@@ -80,11 +88,32 @@ export default function PollCard({ poll, currentProfile, canDelete, onDeleted }:
 
   return (
     <div className="bg-surface border border-base rounded-2xl overflow-hidden">
-      {/* Üst bant: tarih + öncelik + sil */}
-      <div className="flex items-center justify-between px-5 py-3 border-b border-base bg-surface2">
-        <div className="flex items-center gap-2">
-          <div className={`w-2 h-2 rounded-full flex-shrink-0 ${priority.dot}`} />
-          <span className={`text-xs font-semibold ${priority.text}`}>{priority.label}</span>
+      {/* Countdown bar */}
+      <div className="relative h-1 bg-surface2">
+        <div
+          className={`h-full transition-all duration-1000 ${
+            countdown.expired ? 'bg-border' :
+            countdown.percent > 50 ? 'bg-green-500' :
+            countdown.percent > 20 ? 'bg-yellow-500' : 'bg-red-500'
+          }`}
+          style={{ width: `${countdown.percent}%` }}
+        />
+      </div>
+      {/* Üst bant: öncelik + countdown + sil */}
+      <div className="flex items-center justify-between px-5 py-2.5 border-b border-base bg-surface2">
+        <div className="flex items-center gap-3">
+          <div className="flex items-center gap-1.5">
+            <div className={`w-2 h-2 rounded-full flex-shrink-0 ${priority.dot}`} />
+            <span className={`text-xs font-semibold ${priority.text}`}>{priority.label}</span>
+          </div>
+          <div className={`flex items-center gap-1 text-xs font-medium ${
+            countdown.expired ? 'text-muted' :
+            countdown.percent > 50 ? 'text-green-400' :
+            countdown.percent > 20 ? 'text-yellow-400' : 'text-red-400'
+          }`}>
+            <Clock className="w-3 h-3 flex-shrink-0" />
+            <span>{countdown.text}</span>
+          </div>
         </div>
         <div className="flex items-center gap-2">
           <span className="text-xs text-muted">{formatRelativeTime(poll.created_at)}</span>
@@ -114,20 +143,12 @@ export default function PollCard({ poll, currentProfile, canDelete, onDeleted }:
         {/* Soru */}
         <div className="flex items-start gap-3">
           <p className="font-semibold text-sm leading-snug flex-1">{poll.question}</p>
-          <div className="flex items-center gap-1.5 flex-shrink-0">
-            {isExpired && (
-              <span className="inline-flex items-center gap-1 text-xs text-muted bg-surface2 border border-base px-2 py-0.5 rounded-full">
-                <Clock className="w-3 h-3" />
-                Sona erdi
-              </span>
-            )}
-            {poll.allow_multiple && (
-              <span className="inline-flex items-center gap-1 text-xs text-muted bg-surface2 border border-base px-2 py-0.5 rounded-full">
-                <ToggleLeft className="w-3 h-3" />
-                Çoklu
-              </span>
-            )}
-          </div>
+          {poll.allow_multiple && (
+            <span className="inline-flex items-center gap-1 text-xs text-muted bg-surface2 border border-base px-2 py-0.5 rounded-full flex-shrink-0">
+              <ToggleLeft className="w-3 h-3" />
+              Çoklu
+            </span>
+          )}
         </div>
 
         {/* Seçenekler */}
@@ -184,15 +205,6 @@ export default function PollCard({ poll, currentProfile, canDelete, onDeleted }:
           </span>
           {hasVoted && !isExpired && (
             <span className="text-accent">· Oyun kaydedildi</span>
-          )}
-          {poll.ends_at && !isExpired && (
-            <>
-              <span>·</span>
-              <span className="inline-flex items-center gap-1">
-                <Clock className="w-3 h-3" />
-                {new Date(poll.ends_at).toLocaleDateString('tr-TR')} bitiyor
-              </span>
-            </>
           )}
         </div>
       </div>

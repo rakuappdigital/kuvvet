@@ -20,6 +20,22 @@ export function getGroupAvatarUrl(avatarId: number): string {
   return `/group-avatars/group-${avatarId}.svg`
 }
 
+export const EXPIRY_MS = 24 * 60 * 60 * 1000 // 24 saat
+
+export function getExpiresAt(createdAt: string): Date {
+  return new Date(new Date(createdAt).getTime() + EXPIRY_MS)
+}
+
+export function getTimeLeft(expiresAt: Date): { text: string; percent: number; expired: boolean } {
+  const remaining = expiresAt.getTime() - Date.now()
+  if (remaining <= 0) return { text: 'Süresi doldu', percent: 0, expired: true }
+  const percent = Math.min(100, (remaining / EXPIRY_MS) * 100)
+  const hours = Math.floor(remaining / 3600000)
+  const minutes = Math.floor((remaining % 3600000) / 60000)
+  const text = hours > 0 ? `${hours} sa ${minutes} dk kaldı` : `${minutes} dk kaldı`
+  return { text, percent, expired: false }
+}
+
 export function formatRelativeTime(dateStr: string): string {
   const date = new Date(dateStr)
   const now = new Date()
