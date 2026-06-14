@@ -37,6 +37,8 @@ export interface WallPost {
   created_at: string
 }
 
+export type PollPriority = 'normal' | 'acil' | 'kritik'
+
 export interface Poll {
   id: string
   group_id: string
@@ -44,6 +46,23 @@ export interface Poll {
   question: string
   ends_at: string | null
   allow_multiple: boolean
+  priority: PollPriority
+  created_at: string
+}
+
+export interface Activity {
+  id: string
+  group_id: string
+  created_by: string
+  title: string
+  created_at: string
+}
+
+export interface ActivityResponse {
+  id: string
+  activity_id: string
+  user_id: string
+  response: 'geliyor' | 'gelmiyor' | 'bilemiyorum'
   created_at: string
 }
 

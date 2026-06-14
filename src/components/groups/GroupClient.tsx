@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
-import { ArrowLeft, UserPlus, MessageSquare, BarChart2, Users, Plus, Crown, Shield, Settings, LogOut } from 'lucide-react'
+import { ArrowLeft, UserPlus, MessageSquare, BarChart2, Users, Plus, Crown, Shield, Settings, LogOut, CalendarCheck } from 'lucide-react'
 import Image from 'next/image'
 import { getGroupAvatarUrl } from '@/lib/utils'
 import Wall from '@/components/wall/Wall'
@@ -10,12 +10,14 @@ import PollCard from '@/components/polls/PollCard'
 import CreatePollModal from '@/components/polls/CreatePollModal'
 import InviteModal from '@/components/groups/InviteModal'
 import GroupSettingsModal from '@/components/groups/GroupSettingsModal'
+import ActivityCard from '@/components/activity/ActivityCard'
+import CreateActivityModal from '@/components/activity/CreateActivityModal'
 import Avatar from '@/components/ui/Avatar'
 import Button from '@/components/ui/Button'
 import { createClient } from '@/lib/supabase/client'
-import type { Group, Profile, Poll, PollOption } from '@/types/database'
+import type { Group, Profile, Poll, PollOption, Activity } from '@/types/database'
 
-type Tab = 'wall' | 'polls' | 'members'
+type Tab = 'wall' | 'polls' | 'activity' | 'members'
 
 interface Member {
   role: string
@@ -23,19 +25,26 @@ interface Member {
   profiles: { id: string; username: string; avatar_id: number }
 }
 
+interface ActivityWithProfile extends Activity {
+  profiles: { username: string; avatar_id: number }
+}
+
 interface Props {
   group: Group
   currentProfile: Profile
-  myRole: string // reserved for future admin controls
+  myRole: string
   initialMembers: Member[]
   initialPolls: (Poll & { poll_options: PollOption[] })[]
+  initialActivities: ActivityWithProfile[]
 }
 
-export default function GroupClient({ group, currentProfile, myRole: _myRole, initialMembers, initialPolls }: Props) {
+export default function GroupClient({ group, currentProfile, myRole: _myRole, initialMembers, initialPolls, initialActivities }: Props) {
   const [tab, setTab] = useState<Tab>('wall')
   const [polls, setPolls] = useState(initialPolls)
+  const [activities, setActivities] = useState(initialActivities)
   const [showInvite, setShowInvite] = useState(false)
   const [showCreatePoll, setShowCreatePoll] = useState(false)
+  const [showCreateActivity, setShowCreateActivity] = useState(false)
   const [showSettings, setShowSettings] = useState(false)
   const [showLeaveConfirm, setShowLeaveConfirm] = useState(false)
   const [groupData, setGroupData] = useState(group)
@@ -44,26 +53,31 @@ export default function GroupClient({ group, currentProfile, myRole: _myRole, in
   const supabase = createClient()
 
   async function handleLeave() {
-    await supabase.from('group_members')
-      .delete()
-      .eq('group_id', group.id)
-      .eq('user_id', currentProfile.id)
+    await supabase.from('group_members').delete()
+      .eq('group_id', group.id).eq('user_id', currentProfile.id)
     window.location.href = '/'
   }
 
   async function refreshPolls() {
-    const { data } = await supabase
-      .from('polls')
-      .select('*, poll_options(*)')
-      .eq('group_id', group.id)
-      .order('created_at', { ascending: false })
+    const { data } = await supabase.from('polls').select('*, poll_options(*)')
+      .eq('group_id', group.id).order('created_at', { ascending: false })
     if (data) setPolls(data as any)
   }
 
+  async function refreshActivities() {
+    const { data } = await supabase
+      .from('activities')
+      .select('*, profiles(username, avatar_id)')
+      .eq('group_id', group.id)
+      .order('created_at', { ascending: false })
+    if (data) setActivities(data as any)
+  }
+
   const tabs: { key: Tab; label: string; icon: React.ReactNode }[] = [
-    { key: 'wall', label: 'Duvar', icon: <MessageSquare className="w-3.5 h-3.5" /> },
-    { key: 'polls', label: 'Anketler', icon: <BarChart2 className="w-3.5 h-3.5" /> },
-    { key: 'members', label: 'Üyeler', icon: <Users className="w-3.5 h-3.5" /> },
+    { key: 'wall',     label: 'Duvar',     icon: <MessageSquare className="w-3.5 h-3.5" /> },
+    { key: 'polls',    label: 'Anketler',  icon: <BarChart2 className="w-3.5 h-3.5" /> },
+    { key: 'activity', label: 'Aktivite',  icon: <CalendarCheck className="w-3.5 h-3.5" /> },
+    { key: 'members',  label: 'Üyeler',    icon: <Users className="w-3.5 h-3.5" /> },
   ]
 
   const roleIcon = (role: string) => {
@@ -93,11 +107,9 @@ export default function GroupClient({ group, currentProfile, myRole: _myRole, in
           </div>
           <div className="flex items-center gap-2">
             {canLeave && !showLeaveConfirm && (
-              <button
-                onClick={() => setShowLeaveConfirm(true)}
+              <button onClick={() => setShowLeaveConfirm(true)}
                 className="w-8 h-8 flex items-center justify-center rounded-xl border border-base hover:bg-red-500/10 hover:border-red-500/30 text-muted hover:text-red-400 transition"
-                title="Gruptan ayrıl"
-              >
+                title="Gruptan ayrıl">
                 <LogOut className="w-4 h-4" />
               </button>
             )}
@@ -109,10 +121,8 @@ export default function GroupClient({ group, currentProfile, myRole: _myRole, in
               </div>
             )}
             {canManage && (
-              <button
-                onClick={() => setShowSettings(true)}
-                className="w-8 h-8 flex items-center justify-center rounded-xl border border-base hover:bg-surface2 hover:border-accent/40 text-muted hover:text-accent transition"
-              >
+              <button onClick={() => setShowSettings(true)}
+                className="w-8 h-8 flex items-center justify-center rounded-xl border border-base hover:bg-surface2 hover:border-accent/40 text-muted hover:text-accent transition">
                 <Settings className="w-4 h-4" />
               </button>
             )}
@@ -124,16 +134,13 @@ export default function GroupClient({ group, currentProfile, myRole: _myRole, in
         </div>
       </div>
 
-      {/* Tabs */}
-      <div className="flex gap-1 bg-surface p-1 rounded-xl border border-base w-fit">
+      {/* Tabs — yatay scroll küçük ekranda */}
+      <div className="flex gap-1 bg-surface p-1 rounded-xl border border-base overflow-x-auto">
         {tabs.map(t => (
-          <button
-            key={t.key}
-            onClick={() => setTab(t.key)}
-            className={`flex items-center gap-1.5 px-4 py-2 text-xs font-semibold rounded-lg transition ${
+          <button key={t.key} onClick={() => setTab(t.key)}
+            className={`flex items-center gap-1.5 px-3 py-2 text-xs font-semibold rounded-lg transition whitespace-nowrap flex-shrink-0 ${
               tab === t.key ? 'accent' : 'text-muted hover:text-accent'
-            }`}
-          >
+            }`}>
             {t.icon}
             {t.label}
           </button>
@@ -141,17 +148,14 @@ export default function GroupClient({ group, currentProfile, myRole: _myRole, in
       </div>
 
       {/* Content */}
-      {tab === 'wall' && (
-        <Wall groupId={group.id} currentProfile={currentProfile} />
-      )}
+      {tab === 'wall' && <Wall groupId={group.id} currentProfile={currentProfile} />}
 
       {tab === 'polls' && (
         <div className="space-y-4">
           <div className="flex items-center justify-between">
             <h2 className="text-sm font-semibold">Anketler</h2>
             <Button size="sm" onClick={() => setShowCreatePoll(true)}>
-              <Plus className="w-3.5 h-3.5" />
-              Anket ekle
+              <Plus className="w-3.5 h-3.5" />Anket ekle
             </Button>
           </div>
           {polls.length === 0 ? (
@@ -163,8 +167,38 @@ export default function GroupClient({ group, currentProfile, myRole: _myRole, in
             </div>
           ) : (
             <div className="space-y-3">
-              {polls.map(poll => (
-                <PollCard key={poll.id} poll={poll} currentProfile={currentProfile} />
+              {polls.map(poll => <PollCard key={poll.id} poll={poll} currentProfile={currentProfile} />)}
+            </div>
+          )}
+        </div>
+      )}
+
+      {tab === 'activity' && (
+        <div className="space-y-4">
+          <div className="flex items-center justify-between">
+            <h2 className="text-sm font-semibold">Aktiviteler</h2>
+            <Button size="sm" onClick={() => setShowCreateActivity(true)}>
+              <Plus className="w-3.5 h-3.5" />Aktivite ekle
+            </Button>
+          </div>
+          {activities.length === 0 ? (
+            <div className="bg-surface border border-base rounded-2xl p-10 text-center space-y-3">
+              <div className="w-10 h-10 bg-surface2 border border-base rounded-xl flex items-center justify-center mx-auto">
+                <CalendarCheck className="w-4 h-4 text-muted" />
+              </div>
+              <p className="text-muted text-sm">Henüz aktivite yok.</p>
+              <p className="text-xs text-muted">Bir buluşma veya etkinlik oluştur, üyeler katılıp katılmayacaklarını belirtsin.</p>
+            </div>
+          ) : (
+            <div className="space-y-3">
+              {activities.map(a => (
+                <ActivityCard
+                  key={a.id}
+                  activity={a}
+                  currentProfile={currentProfile}
+                  canDelete={a.created_by === currentProfile.id || canManage}
+                  onDeleted={id => setActivities(prev => prev.filter(x => x.id !== id))}
+                />
               ))}
             </div>
           )}
@@ -175,11 +209,15 @@ export default function GroupClient({ group, currentProfile, myRole: _myRole, in
         <div className="bg-surface border border-base rounded-2xl overflow-hidden">
           {initialMembers.map((m, i) => (
             <div key={m.profiles.id} className={`flex items-center gap-3 px-5 py-3.5 ${i > 0 ? 'border-t border-base' : ''}`}>
-              <Avatar avatarId={m.profiles.avatar_id} username={m.profiles.username} size={34} className="ring-1 ring-border" />
+              <Link href={`/profile/${m.profiles.username}`}>
+                <Avatar avatarId={m.profiles.avatar_id} username={m.profiles.username} size={34} className="ring-1 ring-border hover:opacity-80 transition" />
+              </Link>
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-1.5">
                   {roleIcon(m.role)}
-                  <span className="text-sm font-medium">@{m.profiles.username}</span>
+                  <Link href={`/profile/${m.profiles.username}`} className="text-sm font-medium hover:text-accent transition">
+                    @{m.profiles.username}
+                  </Link>
                 </div>
                 <p className="text-xs text-muted">{new Date(m.joined_at).toLocaleDateString('tr-TR')} katıldı</p>
               </div>
@@ -190,19 +228,16 @@ export default function GroupClient({ group, currentProfile, myRole: _myRole, in
 
       {showInvite && <InviteModal group={groupData} onClose={() => setShowInvite(false)} />}
       {showSettings && (
-        <GroupSettingsModal
-          group={groupData}
-          onClose={() => setShowSettings(false)}
-          onUpdated={(updated) => setGroupData(prev => ({ ...prev, ...updated }))}
-        />
+        <GroupSettingsModal group={groupData} onClose={() => setShowSettings(false)}
+          onUpdated={(updated) => setGroupData(prev => ({ ...prev, ...updated }))} />
       )}
       {showCreatePoll && (
-        <CreatePollModal
-          groupId={group.id}
-          userId={currentProfile.id}
-          onCreated={refreshPolls}
-          onClose={() => setShowCreatePoll(false)}
-        />
+        <CreatePollModal groupId={group.id} userId={currentProfile.id}
+          onCreated={refreshPolls} onClose={() => setShowCreatePoll(false)} />
+      )}
+      {showCreateActivity && (
+        <CreateActivityModal groupId={group.id} userId={currentProfile.id}
+          onCreated={refreshActivities} onClose={() => setShowCreateActivity(false)} />
       )}
     </div>
   )

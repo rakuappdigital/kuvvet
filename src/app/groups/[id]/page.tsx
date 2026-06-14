@@ -20,25 +20,15 @@ export default async function GroupPage({ params }: Props) {
   if (!group) notFound()
 
   const membershipResult = await supabase
-    .from('group_members')
-    .select('role')
-    .eq('group_id', id)
-    .eq('user_id', user.id)
-    .maybeSingle()
-
+    .from('group_members').select('role').eq('group_id', id).eq('user_id', user.id).maybeSingle()
   const membership = membershipResult.data as { role: string } | null
   if (!membership) redirect('/')
 
-  const { data: members } = await supabase
-    .from('group_members')
-    .select('role, joined_at, profiles(id, username, avatar_id)')
-    .eq('group_id', id)
-
-  const { data: polls } = await supabase
-    .from('polls')
-    .select('*, poll_options(*)')
-    .eq('group_id', id)
-    .order('created_at', { ascending: false })
+  const [{ data: members }, { data: polls }, { data: activities }] = await Promise.all([
+    supabase.from('group_members').select('role, joined_at, profiles(id, username, avatar_id)').eq('group_id', id),
+    supabase.from('polls').select('*, poll_options(*)').eq('group_id', id).order('created_at', { ascending: false }),
+    supabase.from('activities').select('*, profiles(username, avatar_id)').eq('group_id', id).order('created_at', { ascending: false }),
+  ])
 
   return (
     <>
@@ -50,6 +40,7 @@ export default async function GroupPage({ params }: Props) {
           myRole={membership.role}
           initialMembers={(members ?? []) as any}
           initialPolls={(polls ?? []) as any}
+          initialActivities={(activities ?? []) as any}
         />
       </main>
     </>
