@@ -6,10 +6,10 @@ import { createClient } from '@/lib/supabase/client'
 import Button from '@/components/ui/Button'
 import type { PollPriority } from '@/types/database'
 
-const PRIORITIES: { value: PollPriority; label: string; dot: string }[] = [
-  { value: 'normal', label: 'Normal', dot: 'bg-green-400' },
-  { value: 'acil',   label: 'Acil',   dot: 'bg-yellow-400' },
-  { value: 'kritik', label: 'Kritik', dot: 'bg-red-400' },
+const PRIORITIES: { value: PollPriority; label: string; dot: string; active: string }[] = [
+  { value: 'normal', label: 'Normal', dot: 'bg-green-400',  active: 'border-green-500/60 bg-green-500/15 text-green-400' },
+  { value: 'acil',   label: 'Acil',   dot: 'bg-yellow-400', active: 'border-yellow-500/60 bg-yellow-500/15 text-yellow-400' },
+  { value: 'kritik', label: 'Kritik', dot: 'bg-red-400',    active: 'border-red-500/60 bg-red-500/15 text-red-400' },
 ]
 
 interface Props {
@@ -89,8 +89,8 @@ export default function CreatePollModal({ groupId, userId, onCreated, onClose }:
                   onClick={() => setPriority(p.value)}
                   className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl border text-sm font-medium transition ${
                     priority === p.value
-                      ? 'border-accent/50 bg-accent/10 text-accent'
-                      : 'border-base text-muted hover:bg-surface2 hover:text-accent hover:border-accent/30'
+                      ? p.active
+                      : 'border-base text-muted hover:bg-surface2 hover:border-base/60'
                   }`}
                 >
                   <div className={`w-2 h-2 rounded-full ${p.dot}`} />
