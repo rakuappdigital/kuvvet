@@ -25,11 +25,8 @@ export default function JoinGroupModal({ userId, onClose }: Props) {
 
     const trimmed = code.trim().toLowerCase()
 
-    const { data: group } = await supabase
-      .from('groups')
-      .select('id, name')
-      .eq('invite_code', trimmed)
-      .maybeSingle()
+    const { data: rows } = await supabase.rpc('find_group_by_invite_code', { code: trimmed })
+    const group = rows?.[0] ?? null
 
     if (!group) {
       setError('Geçersiz kod. Tekrar kontrol et.')
