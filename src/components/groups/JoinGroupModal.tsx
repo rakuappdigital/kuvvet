@@ -43,11 +43,16 @@ export default function JoinGroupModal({ userId, onClose }: Props) {
       .maybeSingle()
 
     if (!existing) {
-      await supabase.from('group_members').insert({
+      const { error: insertError } = await supabase.from('group_members').insert({
         group_id: group.id,
         user_id: userId,
         role: 'member',
       })
+      if (insertError) {
+        setError('Gruba katılırken hata oluştu. Tekrar dene.')
+        setLoading(false)
+        return
+      }
     }
 
     router.push(`/groups/${group.id}`)
