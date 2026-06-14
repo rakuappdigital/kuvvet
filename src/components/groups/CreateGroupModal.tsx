@@ -30,7 +30,7 @@ export default function CreateGroupModal({ userId, onCreated, onClose }: Props) 
       .single()
 
     if (groupErr || !group) {
-      setError(groupErr?.message || 'Grup oluşturulamadı.')
+      setError('Grup oluşturulamadı.')
       setLoading(false)
       return
     }
